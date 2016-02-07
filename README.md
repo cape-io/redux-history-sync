@@ -2,14 +2,13 @@
 
 Essentially, this module syncs browser history locations with a Redux store. If you are looking to read and write changes to the address bar via Redux this might be for you.
 
-This module is not intended to work with `react-router` or `history`.
+This module is intended to be the **only** module in your app that manages or touches window.history.
 
 So far the module is a result of a few hours of passionate programming. I'm giving it a 1.0 because it's used in production. But really it's alpha quality. I will give it full version bumps with breaking API changes. Also notice I haven't pushed the test directory yet! :-x
 
 ## Overall Principals
 
 * The browser forward/back buttons should result in Redux actions just like buttons on the page would.
-* This is the only module in your app to manage window.history integration.
 * Changes made to the url should be made via an action.
 * Each history event gets a unique key.
 * Location and related state is saved under a unique key in the store.
@@ -25,7 +24,7 @@ So far the module is a result of a few hours of passionate programming. I'm givi
 
 ## Not for you?
 
-* If you want integration with react-router look at react-router-redux.
+This module is not intended to work with `react-router` or `history`. If you want integration with `react-router` look at `react-router-redux`.
 
 ## API
 
@@ -38,7 +37,7 @@ Currently the best documentation is reading the source and looking at the exampl
 
 ### Actions
 
-* `createHistory`: `create(location, title, key, pushState = true)` This action should be dispatched when you want a new history entry.
+* `createHistory`: `create(location, title, key = null, pushState = true)` This action should be dispatched when you want a new history entry.
 * `restoreHistory`: `restore(key, pushState = true)` This action should be dispatched when you want to exchange state with a previous history.
 
 ### Components

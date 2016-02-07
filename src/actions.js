@@ -14,14 +14,14 @@ export function restore(key, pushState = true) {
     type: HISTORY_RESTORE,
     payload: key,
     meta: {
-      pushState
-    }
+      pushState,
+    },
   }
 }
 const defaultLocation = {
   pathname: '',
   hash: '',
-  search: ''
+  search: '',
 }
 export function getLocationObject(location) {
   const loc = pick(location,
@@ -32,17 +32,17 @@ export function getLocationObject(location) {
 /**
  * This action should be dispatched when you want a new history entry.
  */
-export function create(location, title, key, pushState = true) {
+export function create(location, title, key = null, pushState = true) {
   return {
     type: HISTORY_CREATE,
     payload: {
       title: title || '',
       location: getLocationObject(location),
-      key: key || newKey()
+      key: key || newKey(),
     },
     meta: {
-      pushState
-    }
+      pushState,
+    },
   }
 }
 
@@ -52,7 +52,7 @@ export function hashChange(hash) {
     type: HISTORY_HASH_CHANGE,
     payload: {
       hash,
-      key: newKey()
-    }
+      key: newKey(),
+    },
   }
 }
