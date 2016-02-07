@@ -4,6 +4,8 @@ Essentially, this module syncs browser history locations with a Redux store. If 
 
 This module is not intended to work with `react-router` or `history`.
 
+So far the module is a result of a few hours of passionate programming. I'm giving it a 1.0 because it's used in production. But really it's alpha quality. I will give it full version bumps with breaking API changes.
+
 ## Overall Principals
 
 * The browser forward/back buttons should result in Redux actions just like buttons on the page would.
@@ -17,12 +19,17 @@ This module is not intended to work with `react-router` or `history`.
 * Restore previous state on navigation changes.
 * Typical changes to the pathname portion of window.location via Redux action is a `push` event.
 * Mirror DevTools changes by moving browser history forward or backward where possible.
+* Exchange many API parts for modularity and customization.
+* Absolutely no concern over routing/router/routes.
+* Avoid any direct usage of `window` object from within the library. This might change in the future.
 
 ## Not for you?
 
 * If you want integration with react-router look at react-router-redux.
 
 ## API
+
+Currently the best documentation is reading the source and looking at the example.
 
 ### Action types
 
@@ -38,9 +45,15 @@ This module is not intended to work with `react-router` or `history`.
 
 `<Link />`
 
+### Possible hacks
+
+* `const historyCache = createHistoryCache()` In memory history state persistence.
+* `getInitState(window.location, window.document.title)` Dispatch initial action on reducer for sane DevTools resets.
+* `makeHydratable(reducer)`
+
 ### Middleware
 
-`historyMiddleware`
+`historyMiddleware(window.history, historyCache)`
 
 ### Reducer
 
@@ -52,4 +65,10 @@ This module is not intended to work with `react-router` or `history`.
 
 ### Sync
 
-`syncHistoryWithStore`
+`syncHistoryWithStore(store, window, historyCache)`
+
+## Routes / Routing / Router
+
+The address bar is a form input. It does not represent overall state. At its best the url can be parsed into an object and be used a tiny portion of application state. The URL is given too much attention.
+
+A complete example will be provided soon on how parse the location object and turn it into useful state using the `location-info` module.
