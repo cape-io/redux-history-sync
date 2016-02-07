@@ -12,26 +12,30 @@ import {
   historyMiddleware,
   makeHydratable,
   historyReducer,
-  getInitState
+  getInitState,
 } from 'react-router-redux'
 
 import App from './AppContainer'
 
 const DevTools = createDevTools(
   <DockMonitor toggleVisibilityKey="ctrl-h"
-               changePositionKey="ctrl-q">
+    changePositionKey="ctrl-q"
+  >
     <LogMonitor theme="tomorrow" preserveScrollTop={false} />
   </DockMonitor>
 )
 
+// Create an object with two methods. getKeyStore and saveKeyStore.
 const historyCache = createHistoryCache()
+
 const reducer = combineReducers({
-  history: historyReducer
+  history: historyReducer,
 })
+
 const store = createStore(
   makeHydratable(reducer),
   {
-    history: getInitState(window.location, window.document.title)
+    history: getInitState(window.location, window.document.title),
   },
   compose(
     applyMiddleware(historyMiddleware(window.history, historyCache)),

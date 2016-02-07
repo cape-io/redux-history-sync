@@ -46,7 +46,7 @@ Currently the best documentation is reading the source and looking at the exampl
 
 ### Possible hacks
 
-* `const historyCache = createHistoryCache()` In memory history state persistence.
+* `const historyCache = createHistoryCache()` In memory history state persistence. Creates an object with two methods. `getKeyStore` and `saveKeyStore`. It's used to save a full store.getState() snapshot for each history/location.
 * `getInitState(window.location, window.document.title)` Dispatch initial action on reducer for sane DevTools resets.
 * `makeHydratable(reducer)`
 
