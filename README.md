@@ -1,6 +1,6 @@
 # redux-history-sync
 
-Essentially, this module syncs browser history locations with a Redux store. If you are looking to read and write changes to the address bar via Redux this might be fore you.
+Essentially, this module syncs browser history locations with a Redux store. If you are looking to read and write changes to the address bar via Redux this might be for you.
 
 This module is not intended to work with `react-router` or `history`.
 
