@@ -15,3 +15,5 @@ export historyReducer, {
 } from './reducer'
 export syncHistoryWithStore from './sync'
 export { newKey, locationSerialize } from './utils'
+
+export Link from './Link'
