@@ -1,6 +1,10 @@
 # redux-history-sync
 
-## Rules of this module
+Essentially, this module syncs browser history locations with a Redux store. If you are looking to read and write changes to the address bar via Redux this might be fore you.
+
+This module is not intended to work with `react-router` or `history`.
+
+## Overall Principals
 
 * The browser forward/back buttons should result in Redux actions just like buttons on the page would.
 * This is the only module in your app to manage window.history integration.
@@ -11,7 +15,7 @@
 * Store must have valid initialState set with current location/history information.
 * Make browser back/forward navigation and the address bar as controlled as possible.
 * Restore previous state on navigation changes.
-* Changes to the pathname portion of window.location via Redux action is a `push` event.
+* Typical changes to the pathname portion of window.location via Redux action is a `push` event.
 * Mirror DevTools changes by moving browser history forward or backward where possible.
 
 ## Not for you?
@@ -29,6 +33,10 @@
 
 * `createHistory`: `create(location, title, key, pushState = true)` This action should be dispatched when you want a new history entry.
 * `restoreHistory`: `restore(key, pushState = true)` This action should be dispatched when you want to exchange state with a previous history.
+
+### Components
+
+`<Link />`
 
 ### Middleware
 
