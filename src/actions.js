@@ -46,6 +46,7 @@ export function create(location, title, key, pushState = true) {
   }
 }
 
+// Currently this is private only. Call when user changes hash in address bar.
 export function hashChange(hash) {
   return {
     type: HISTORY_HASH_CHANGE,
