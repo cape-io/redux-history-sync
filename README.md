@@ -4,7 +4,7 @@ Essentially, this module syncs browser history locations with a Redux store. If 
 
 This module is not intended to work with `react-router` or `history`.
 
-So far the module is a result of a few hours of passionate programming. I'm giving it a 1.0 because it's used in production. But really it's alpha quality. I will give it full version bumps with breaking API changes.
+So far the module is a result of a few hours of passionate programming. I'm giving it a 1.0 because it's used in production. But really it's alpha quality. I will give it full version bumps with breaking API changes. Also notice I haven't pushed the test directory yet! :-x
 
 ## Overall Principals
 
