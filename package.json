@@ -1,13 +1,13 @@
 {
   "name": "redux-history-sync",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Keeping browser history and redux in sync",
   "homepage": "https://github.com/cape-io/redux-history-sync",
   "author": "Kai Curry <kai@cape.io> (http://www.cape.io/)",
   "main": "lib/index",
-  "repository": "cape-io/react-router-redux",
+  "repository": "cape-io/redux-history-sync",
   "bugs": {
-    "url": "https://github.com/OOKB/contemporary/issues"
+    "url": "https://github.com/cape-io/redux-history-sync/issues"
   },
   "tags": [
     "react",
