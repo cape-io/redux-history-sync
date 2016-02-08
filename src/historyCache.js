@@ -12,11 +12,11 @@ export default function createHistoryCache(selectHistory = selectHistoryState) {
     }
     return {
       ...index[key],
-      history: selectHistory(state)
+      history: selectHistory(state),
     }
   }
   return {
     saveKeyState,
-    getKeyState
+    getKeyState,
   }
 }
