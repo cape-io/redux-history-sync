@@ -4,6 +4,6 @@ export function newKey() {
 /**
  * Serialize location object into a string like it shows up in the address bar.
  */
-export function locationSerialize({ pathname, search, hash }) {
+export function locationSerialize({ pathname = '', search = '', hash = '' }) {
   return `${pathname}${search}${hash}`
 }
