@@ -17,8 +17,6 @@ module.exports = {
   }
 }
 
-
-
 // This will make the redux-simpler-router module resolve to the
 // latest src instead of using it from npm. Remove this if running
 // outside of the source.
