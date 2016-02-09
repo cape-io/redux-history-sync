@@ -13,7 +13,7 @@ import {
   makeHydratable,
   historyReducer,
   getInitState,
-} from 'react-router-redux'
+} from 'redux-history-sync'
 
 import App from './AppContainer'
 
