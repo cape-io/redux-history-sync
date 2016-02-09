@@ -21,7 +21,7 @@ export default function middleware(history, { getKeyState }, selectHistory = sel
       const state = getKeyState(activeKey, store.getState())
       return next({
         ...action,
-        state
+        state,
       })
     }
     // A new history entry was added to browser, [sigh] mirror in Redux.
