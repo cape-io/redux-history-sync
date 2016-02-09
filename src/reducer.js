@@ -4,17 +4,21 @@ const initialState = {
   activeKey: null,
   firstKey: null,
   length: 0,
-  key: {}
+  key: {},
 }
 /**
  * This reducer will update the state with the most recent history key and location.
  */
 export default function reducer(state = initialState, action) {
-  switch (action.type) {
+  if (!action.type) {
+    return state
+  }
+  const { payload, type } = action
+  const { key, title } = payload
+  switch (type) {
     case HISTORY_RESTORE:
-      return { ...state, activeKey: action.payload }
+      return { ...state, activeKey: payload }
     case HISTORY_CREATE:
-      const { payload: { key, location, title } } = action
       return {
         firstKey: state.firstKey || key,
         activeKey: key,
@@ -25,9 +29,9 @@ export default function reducer(state = initialState, action) {
             index: state.length,
             key,
             title,
-            location
-          }
-        }
+            location,
+          },
+        },
       }
     default:
       return state
