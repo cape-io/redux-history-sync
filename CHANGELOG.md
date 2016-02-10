@@ -1,3 +1,7 @@
+## [1.1.2]
+
+Using `payload.location` inside reducer instead of a spread on payload. Global location object was being saved instead.
+
 ## [1.1.1]
 
 Return `state` in reducer early if no `action.payload`.
