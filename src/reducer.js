@@ -10,7 +10,7 @@ const initialState = {
  * This reducer will update the state with the most recent history key and location.
  */
 export default function reducer(state = initialState, action) {
-  if (!action.type) {
+  if (!action.type || !action.payload) {
     return state
   }
   const { payload, type } = action
@@ -42,18 +42,6 @@ export function getInitState(location, title) {
   const action = create(location, title)
   const state = reducer(undefined, action)
   return state
-}
-
-export function makeHydratable(reducer) {
-  return function hydratableReducer(state, action) {
-    switch (action.type) {
-      case HISTORY_RESTORE:
-        // Replace state with that of history.
-        return reducer(action.state, action)
-      default:
-        return reducer(state, action)
-    }
-  }
 }
 
 export function selectHistoryState(state) {

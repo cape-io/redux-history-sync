@@ -11,9 +11,9 @@ export historyReducer, {
   selectActiveKey,
   selectActiveKeyDefault,
   selectHistoryState,
-  makeHydratable,
   getInitState,
 } from './reducer'
+export makeHydratable from './makeHydratable'
 export syncHistoryWithStore from './sync'
 export { newKey, locationSerialize } from './utils'
 
