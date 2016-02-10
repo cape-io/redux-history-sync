@@ -1,3 +1,7 @@
+## [1.1.1]
+
+Return `state` in reducer early if no `action.payload`.
+
 ## [1.1.0]
 
 Upgraded lodash dependency from 4.2.1 to 4.3.0.
