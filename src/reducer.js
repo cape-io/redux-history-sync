@@ -29,7 +29,7 @@ export default function reducer(state = initialState, action) {
             index: state.length,
             key,
             title,
-            location,
+            location: payload.location,
           },
         },
       }

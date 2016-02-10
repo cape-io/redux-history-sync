@@ -80,7 +80,7 @@ export function syncStoreHistory(store, selectHistory, _window, historyCache) {
  * This function saves and restores state with history navigation changes.
  */
 export default function syncHistoryWithStore(store, _window, historyCache, {
-  selectHistory = selectHistoryState
+  selectHistory = selectHistoryState,
 } = {}) {
   const historyState = selectHistory(store.getState())
   // Ensure that the reducer is mounted on the store and functioning properly.
