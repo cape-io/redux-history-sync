@@ -1,6 +1,4 @@
-import defaults from 'lodash/defaults'
-import pick from 'lodash/pick'
-import { newKey } from './utils'
+import { getLocationObject, newKey } from './utils'
 
 export const HISTORY_CREATE = '@@history/CREATE'
 export const HISTORY_RESTORE = '@@history/RESTORE'
@@ -23,12 +21,7 @@ const defaultLocation = {
   hash: '',
   search: '',
 }
-export function getLocationObject(location) {
-  const loc = pick(location,
-    'pathname', 'hash', 'search', 'origin', 'protocol', 'port', 'hostname'
-  )
-  return defaults(loc, defaultLocation)
-}
+
 /**
  * This action should be dispatched when you want a new history entry.
  */
@@ -37,7 +30,7 @@ export function create(location, title, key = null, pushState = true) {
     type: HISTORY_CREATE,
     payload: {
       title: title || '',
-      location: getLocationObject(location),
+      location: getLocationObject(location, defaultLocation),
       key: key || newKey(),
     },
     meta: {

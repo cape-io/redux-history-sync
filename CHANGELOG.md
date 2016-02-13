@@ -1,3 +1,8 @@
+## [1.2.0]
+> 2016-02-13
+
+The `Link` component now parses a location object from a `to` or `href` string in props using `document.createElement('a')` on click. Components can send `pathname`, `search`, `hash` props instead of `href`.
+
 ## [1.1.2]
 
 Using `payload.location` inside reducer instead of a spread on payload. Global location object was being saved instead.
