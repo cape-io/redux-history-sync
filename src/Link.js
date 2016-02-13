@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
 import { create } from './actions'
-import { locationSerialize } from './utils'
+import { getLocationObject, locationSerialize } from './utils'
 
 // Really simple Link component to help transition from react-router.
 
@@ -18,7 +18,7 @@ export function parseUrl(string) {
   }
   const url = window.document.createElement('a')
   url.href = string
-  return url
+  return getLocationObject(url)
 }
 
 export function getLocation({ to, href, ...location }) {
