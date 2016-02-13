@@ -1,7 +1,6 @@
 import test from 'tape'
-import { jsdom } from 'jsdom'
-
-GLOBAL.window = jsdom('hello').defaultView
+// import { jsdom } from 'jsdom'
+// GLOBAL.window = jsdom('hello').defaultView
 
 import { mapStateToProps, parseUrl } from '../src/Link'
 
@@ -18,5 +17,6 @@ test('mapStateToProps() should', assert => {
 
 test('parseUrl() should', assert => {
   assert.deepEqual(parseUrl(), {}, 'return empty object when no arg.')
+  // parseUrl('/foo/bar#hash')
   assert.end()
 })

@@ -11,9 +11,8 @@ export function locationSerialize({ pathname = '', search = '', hash = '' }) {
   return `${pathname}${search}${hash}`
 }
 
-export function getLocationObject(location, defaultLocation = {}) {
-  console.log(location)
-  const loc = pick(location,
+export function getLocationObject(_location, defaultLocation = {}) {
+  const loc = pick(_location,
     'pathname', 'hash', 'search', 'origin', 'protocol', 'port', 'hostname',
   )
   return defaults(loc, defaultLocation)
