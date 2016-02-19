@@ -1,6 +1,6 @@
 {
   "name": "redux-history-sync",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Keeping browser history and redux in sync",
   "homepage": "https://github.com/cape-io/redux-history-sync",
   "author": "Kai Curry <kai@cape.io> (http://www.cape.io/)",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.3",
-    "lodash": "^4.3.0"
+    "lodash": "^4.5.0"
   },
   "devDependencies": {
     "babel-cli": "^6.1.2",
