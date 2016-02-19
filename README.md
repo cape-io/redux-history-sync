@@ -2,9 +2,7 @@
 
 Essentially, this module syncs **browser** history locations with a [Redux](https://github.com/rackt/redux) store. If you are looking to read and write changes to the address bar via Redux this might be for you.
 
-This module is intended to be the **only** module in your app that manages or touches window.history.
-
-So far the module is a result of a few hours of passionate programming. I'm giving it a 1.0 because it's used in production. But really it's alpha quality. I will give it full version bumps with breaking API changes. Also notice the missing test directory! :-x
+This module is intended to be the **only** module in your app that manages or touches window.history. If you want integration with `react-router` or `history` look at `react-router-redux`.
 
 ## Install
 
@@ -32,10 +30,6 @@ If the app developer clicks "Reset" in Redux DevTools the browser history pointe
 * Absolutely no concern over routing/router/routes.
 * Avoid any direct usage of `window` object from within the library. This might change in the future.
 
-## Not for you?
-
-This module is not intended to work with `react-router` or `history`. If you want integration with `react-router` look at `react-router-redux`.
-
 ## API
 
 Currently the best documentation is reading the source and looking at the example.
@@ -52,7 +46,7 @@ Currently the best documentation is reading the source and looking at the exampl
 
 ### Components
 
-`<Link />`
+`<Link href="/foo" />`
 
 ### Possible hacks
 

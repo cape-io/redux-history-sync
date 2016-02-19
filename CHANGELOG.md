@@ -1,3 +1,11 @@
+## [1.3.1]
+
+Update `lodash` to 4.5.
+
+## [1.3.0]
+
+The `Link` component will call onClick function if passed in props.
+
 ## [1.2.0]
 > 2016-02-13
 
