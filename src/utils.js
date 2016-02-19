@@ -1,6 +1,7 @@
-import defaults from 'lodash/defaults'
-import isString from 'lodash/isString'
 import pick from 'lodash/pick'
+
+const hasWindowGlobal = typeof window === 'object'
+const hasRequireGlobal = typeof require === 'function'
 
 export function newKey() {
   return Math.random().toString(36).substr(7)
@@ -11,19 +12,23 @@ export function newKey() {
 export function locationSerialize({ pathname = '', search = '', hash = '' }) {
   return `${pathname}${search}${hash}`
 }
-
-export function getLocationObject(_location, defaultLocation = {}) {
-  const loc = isString(_location) ? { pathname: _location } : pick(_location,
+export function getLocationObject(_location) {
+  const loc = pick(_location,
     'pathname', 'hash', 'search', 'origin', 'protocol', 'port', 'hostname',
   )
-  return defaults(loc, defaultLocation)
+  return loc
 }
-
-export function parseUrl(string) {
-  if (!string) {
-    return {}
-  }
+export function parseUrlBrowser(string) {
   const url = window.document.createElement('a')
   url.href = string
   return getLocationObject(url)
+}
+export function parseUrlNode(string) {
+  const { parse } = require('url')
+  return getLocationObject(parse(string))
+}
+export function parseUrl(string) {
+  if (!string) return string
+  if (hasWindowGlobal) return parseUrlBrowser(string)
+  if (hasRequireGlobal) return parseUrlNode(string)
 }
