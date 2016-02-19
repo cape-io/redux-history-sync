@@ -1,4 +1,6 @@
+import identity from 'lodash/identity'
 import pick from 'lodash/pick'
+import pickBy from 'lodash/pickBy'
 
 const hasWindowGlobal = typeof window === 'object'
 const hasRequireGlobal = typeof require === 'function'
@@ -12,11 +14,12 @@ export function newKey() {
 export function locationSerialize({ pathname = '', search = '', hash = '' }) {
   return `${pathname}${search}${hash}`
 }
+// Internal API.
 export function getLocationObject(_location) {
   const loc = pick(_location,
     'pathname', 'hash', 'search', 'origin', 'protocol', 'port', 'hostname',
   )
-  return loc
+  return pickBy(loc, identity)
 }
 export function parseUrlBrowser(string) {
   const url = window.document.createElement('a')
@@ -28,7 +31,8 @@ export function parseUrlNode(string) {
   return getLocationObject(parse(string))
 }
 export function parseUrl(string) {
-  if (!string) return string
+  if (!string) return {}
   if (hasWindowGlobal) return parseUrlBrowser(string)
   if (hasRequireGlobal) return parseUrlNode(string)
+  throw new Error('No url processor function found.')
 }

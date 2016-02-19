@@ -15,6 +15,6 @@ export historyReducer, {
 } from './reducer'
 export makeHydratable from './makeHydratable'
 export syncHistoryWithStore from './sync'
-export { newKey, locationSerialize } from './utils'
+export { newKey, locationSerialize, parseUrl } from './utils'
 
 export Link from './Link'

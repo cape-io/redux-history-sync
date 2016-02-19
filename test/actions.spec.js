@@ -1,9 +1,10 @@
 import test from 'tape'
-import { getLocationObject, create } from '../src/actions'
+import { create } from '../src/actions'
+import { getLocationObject } from '../src/utils'
 import { location } from './mock'
 
 test('getLocationObject() should', assert => {
-  const result = { pathname: '/foo', hash: '#xk', search: '' }
+  const result = { pathname: '/foo', hash: '#xk' }
   assert.deepEqual(getLocationObject(location), result, 'remove extra props')
   assert.end()
 })

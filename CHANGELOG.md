@@ -1,6 +1,7 @@
-## [1.3.1]
+## [1.4.0]
 
-Update `lodash` to 4.5.
+* Update `lodash` to 4.5.
+* `getLocationObject` no longer takes defaults. Defaults are applied within the `create` action.
 
 ## [1.3.0]
 
