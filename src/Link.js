@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
+import isFunction from 'lodash/isFunction'
 import { create } from './actions'
-import { getLocationObject, locationSerialize } from './utils'
+import { locationSerialize, parseUrl } from './utils'
 
 // Really simple Link component to help transition from react-router.
 
@@ -10,15 +11,6 @@ export function mapStateToProps(state, ownProps) {
   return {
     href: ownProps.href || ownProps.to || locationSerialize(ownProps),
   }
-}
-
-export function parseUrl(string) {
-  if (!string) {
-    return {}
-  }
-  const url = window.document.createElement('a')
-  url.href = string
-  return getLocationObject(url)
 }
 
 export function getLocation({ to, href, ...location }) {
@@ -33,8 +25,12 @@ function mapDispatchToProps(dispatch, ownProps) {
   // This is called on click.
   function handleClick(event) {
     event.preventDefault()
+    const loc = getLocation(ownProps)
+    if (isFunction(ownProps.onClick)) {
+      ownProps.onClick(loc)
+    }
     // Dispatch our event.
-    return dispatch(create(getLocation(ownProps)))
+    return dispatch(create(loc))
   }
   return {
     onClick: handleClick,

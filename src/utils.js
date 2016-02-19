@@ -1,4 +1,5 @@
 import defaults from 'lodash/defaults'
+import isString from 'lodash/isString'
 import pick from 'lodash/pick'
 
 export function newKey() {
@@ -12,8 +13,17 @@ export function locationSerialize({ pathname = '', search = '', hash = '' }) {
 }
 
 export function getLocationObject(_location, defaultLocation = {}) {
-  const loc = pick(_location,
+  const loc = isString(_location) ? { pathname: _location } : pick(_location,
     'pathname', 'hash', 'search', 'origin', 'protocol', 'port', 'hostname',
   )
   return defaults(loc, defaultLocation)
+}
+
+export function parseUrl(string) {
+  if (!string) {
+    return {}
+  }
+  const url = window.document.createElement('a')
+  url.href = string
+  return getLocationObject(url)
 }
