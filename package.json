@@ -74,7 +74,7 @@
     "redux-devtools-dock-monitor": "^1.0.1",
     "redux-devtools-log-monitor": "^1.0.1",
     "tape": "^4.4.0",
-    "webpack": "^1.12.9",
+    "webpack": "^1.12.13",
     "webpack-dev-middleware": "^1.4.0",
     "webpack-hot-middleware": "^2.6.0"
   }
