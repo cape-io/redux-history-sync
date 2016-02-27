@@ -49,6 +49,7 @@ function Anchor({ active, className, onClick, href, ...props }) {
   )
 }
 Anchor.propTypes = {
+  active: PropTypes.bool,
   className: PropTypes.string,
   href: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,

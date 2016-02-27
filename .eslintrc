@@ -1,7 +1,8 @@
 {
   "extends": [
     "airbnb",
-    "import/warnings"
+    "plugin:import/errors",
+    "plugin:import/warnings"
   ],
   "ecmaFeatures": {
     "jsx": true,
@@ -20,7 +21,7 @@
       "min": 3,
       "max": 30,
       "properties": "never",
-      "exceptions": ["cb", "r", "_", "id", "io", "rq", "db", "md", "mx", "qs", "go"]
+      "exceptions": ["t"]
     }],
     "import/no-named-as-default": 2,
     "import/default": 0,

@@ -10,25 +10,24 @@ npm install --save redux-history-sync
 
 ## Overall Principals
 
-Navigating to a new "page" should act like it. UI state should reset/restore as you navigate to a new page or click back/forward. Filters enabled on one page should probably not carry over to another page. Clicking the browsers back/forward buttons while in the app is actually `RESTORE_HISTORY` not `CREATE_HISTORY`. Also, I feel like if the app is going to change the url shown in the address bar it should probably be a new history entry both in the browsers history (via history.pushState) and in Redux. Therefor this library provides to action to call `replaceState`. Please open an issue if you need it.
-
-This library saves each browser history entry to Redux. You can easily read every location a user has visited within the app from Redux. The app is therefor able to render a list of all the "pages" a user has visited from the Redux store. Clicking on one of those pages to navigate to that historical page is same way selecting it from the browsers history. It should emit the `RESTORE_HISTORY` action type.
+This library saves each browser history entry to Redux. You can easily read every location a user has visited within the app from Redux. The app is therefor able to render a list of all the "pages" a user has visited from the Redux store. Clicking on one of those pages to navigate to that historical page is the same as selecting it from the browsers history. Doing so will emit the `RESTORE_HISTORY` action type.
 
 If the app developer clicks "Reset" in Redux DevTools the browser history pointer is updated to the location when the app was loaded. If you disable the most current action that resulted in a page change it will move the browser history position back 1. If you navigate around to 6 pages and click "Reset" it is the same as clicking the back button 6 times. Clicking "Reset" and then clicking the browsers back button should exit the app to whatever page the browser visited previously. If browser window loaded the app first the back button will be disabled.
 
-* The browser forward/back/history dropdown should result in a Redux action just like react button on the page would.
-* Changes made to the url should be made via an action.
-* Each history event gets a unique key.
+Navigating to a new "page" should act like it. UI state should reset/restore as you navigate to a new page or click back/forward. Filters enabled on one page should probably not carry over to another page. Clicking the browsers back/forward buttons while in the app is actually `RESTORE_HISTORY` not `CREATE_HISTORY`. If the app is going to change the url shown in the address bar it should probably be a new history entry both in the browsers history (via history.pushState) and in Redux. Therefor redux-history-sync provides no action for `replaceState()`. Please open an issue if you need it.
+
+* The browser forward/back/history dropdown should result in a Redux action just like a react button on the page would.
+* Changes made to the url by the app should be made via an action.
 * Location and related state is saved under a unique key in the store.
-* Default behavior when switching pages should mimic page reloads. UI state resets.
-* Store must have valid initialState set with current location/history information.
+* Each history event has location saved to its unique key.
+* Reducers can have state specific to a history location. When switching pages previous or new state will be sent to the reducer via the `historySession` reducer. Restore previous state on navigation changes.
 * Make browser back/forward navigation and the address bar as controlled as possible.
-* Restore previous state on navigation changes.
+* Store must have valid initialState set with current location/history information.
 * Typical changes to the pathname portion of window.location via Redux action is a `push` event.
 * Mirror DevTools changes by moving browser history forward or backward where possible.
 * Exchange many API parts for modularity and customization.
 * Absolutely no concern over routing/router/routes.
-* Avoid any direct usage of `window` object from within the library. This might change in the future.
+* Avoid any direct usage of the `window` object from within the library. This might change in the future.
 
 ## API
 
@@ -50,9 +49,7 @@ Currently the best documentation is reading the source and looking at the exampl
 
 ### Possible hacks
 
-* `const historyCache = createHistoryCache()` In memory history state persistence. Creates an object with two methods. `getKeyStore` and `saveKeyStore`. It's used to save a full store.getState() snapshot for each history/location.
 * `getInitState(window.location, window.document.title)` Dispatch initial action on reducer for sane DevTools resets.
-* `makeHydratable(reducer)`
 
 ### Middleware
 
@@ -61,6 +58,7 @@ Currently the best documentation is reading the source and looking at the exampl
 ### Reducer
 
 `historyReducer`
+`historySessionReducer`
 
 ### Reducer Hydratable
 
