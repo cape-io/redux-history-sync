@@ -72,6 +72,6 @@
     "tape": "^4.4.0",
     "webpack": "^1.12.14",
     "webpack-dev-middleware": "^1.4.0",
-    "webpack-hot-middleware": "^2.8.0"
+    "webpack-hot-middleware": "^2.8.1"
   }
 }
