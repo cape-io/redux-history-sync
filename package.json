@@ -51,7 +51,7 @@
     "eslint-config-airbnb": "6.1.0",
     "eslint-plugin-babel": "^3.0.0",
     "eslint-plugin-import": "^1.0.3",
-    "eslint-plugin-react": "^4.2.0",
+    "eslint-plugin-react": "^4.2.3",
     "expect": "^1.13.0",
     "isparta": "^4.0.0",
     "isparta-loader": "^2.0.0",
