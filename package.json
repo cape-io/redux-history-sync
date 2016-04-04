@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.3",
-    "lodash": "^4.6.0"
+    "lodash": "^4.8.1"
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",
