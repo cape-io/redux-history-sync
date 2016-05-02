@@ -33,7 +33,7 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "classnames": "^2.2.3",
+    "classnames": "^2.2.5",
     "lodash": "^4.6.0"
   },
   "devDependencies": {
