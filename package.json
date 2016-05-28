@@ -55,7 +55,7 @@
     "expect": "^1.13.0",
     "isparta": "^4.0.0",
     "isparta-loader": "^2.0.0",
-    "jsdom": "^8.1.0",
+    "jsdom": "^9.2.1",
     "karma": "^0.13.3",
     "karma-chrome-launcher": "^0.2.0",
     "karma-coverage": "^0.5.5",
