@@ -1,6 +1,6 @@
 {
   "name": "redux-history-sync",
-  "version": "1.4.0",
+  "version": "2.0.1",
   "description": "Keeping browser history and redux in sync",
   "homepage": "https://github.com/cape-io/redux-history-sync",
   "author": "Kai Curry <kai@cape.io> (http://www.cape.io/)",
@@ -34,7 +34,8 @@
   },
   "dependencies": {
     "classnames": "^2.2.3",
-    "lodash": "^4.5.1"
+    "lodash": "^4.5.1",
+    "redux": "^3.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",
@@ -56,19 +57,10 @@
     "isparta": "^4.0.0",
     "isparta-loader": "^2.0.0",
     "jsdom": "^8.0.2",
-    "karma": "^0.13.3",
-    "karma-chrome-launcher": "^0.2.0",
-    "karma-coverage": "^0.5.3",
-    "karma-firefox-launcher": "^0.1.7",
-    "karma-ie-launcher": "^0.2.0",
-    "karma-safari-launcher": "^0.1.1",
-    "karma-sourcemap-loader": "^0.3.5",
-    "karma-webpack": "^1.7.0",
     "react": "^0.14.7",
-    "redux": "^3.2.1",
     "redux-devtools": "^3.1.0",
     "redux-devtools-dock-monitor": "^1.1.0",
-    "redux-devtools-log-monitor": "^1.0.1",
+    "redux-devtools-log-monitor": "^1.0.4",
     "tape": "^4.4.0",
     "webpack": "^1.12.14",
     "webpack-dev-middleware": "^1.4.0",

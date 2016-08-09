@@ -44,27 +44,19 @@ export function syncHistoryToStore(store, selectHistory, _window) {
 export function getKeyIndex(historyState, key) {
   return historyState.key[key].index
 }
-export function getBrowserHistoryIndex(browserKey, getKeyState, selectHistory) {
-  const cache = getKeyState(browserKey)
-  const historyCache = selectHistory(cache)
-  return getKeyIndex(historyCache, browserKey)
-}
+
 // Subscribe to store. Save new state to history key index.
-export function syncStoreHistory(store, selectHistory, _window, historyCache) {
+export function syncStoreHistory(store, selectHistory, _window) {
   function handleStoreChange() {
     // Save new state to history key index.
     const state = store.getState()
     const historyState = selectHistory(state)
     const { activeKey } = historyState
-    historyCache.saveKeyState(activeKey, state)
+    const browserKey = _window.history.state.key
     // Tell browser to move forward or backward based DevTools changes.
-    if (_window.history.state.key !== activeKey) {
+    if (browserKey !== activeKey) {
       // What is the index of the browser?
-      const browserIndex = getBrowserHistoryIndex(
-        _window.history.state.key,
-        historyCache.getKeyState,
-        selectHistory
-      )
+      const browserIndex = getKeyIndex(historyState, browserKey)
       // What is the index of the history key in the Redux store?
       const storeIndex = getKeyIndex(historyState, activeKey)
       // How far back or forward do we need to move the browser?
@@ -79,7 +71,7 @@ export function syncStoreHistory(store, selectHistory, _window, historyCache) {
 /**
  * This function saves and restores state with history navigation changes.
  */
-export default function syncHistoryWithStore(store, _window, historyCache, {
+export default function syncHistoryWithStore(store, _window, {
   selectHistory = selectHistoryState,
 } = {}) {
   const historyState = selectHistory(store.getState())
@@ -99,6 +91,6 @@ export default function syncHistoryWithStore(store, _window, historyCache, {
   const locationStr = locationSerialize(state.location)
 
   _window.history.replaceState(state, state.title, locationStr)
-  syncStoreHistory(store, selectHistory, _window, historyCache)
+  syncStoreHistory(store, selectHistory, _window)
   syncHistoryToStore(store, selectHistory, _window)
 }

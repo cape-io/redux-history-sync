@@ -5,7 +5,6 @@ export {
   create as createHistory,
   restore as restoreHistory,
 } from './actions'
-export createHistoryCache from './historyCache'
 export historyMiddleware from './middleware'
 export historyReducer, {
   selectActiveKey,
@@ -13,7 +12,6 @@ export historyReducer, {
   selectHistoryState,
   getInitState,
 } from './reducer'
-export makeHydratable from './makeHydratable'
 export syncHistoryWithStore from './sync'
 export { newKey, locationSerialize, parseUrl } from './utils'
 

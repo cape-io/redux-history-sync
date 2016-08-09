@@ -1,3 +1,12 @@
+## [2.0.1]
+
+* Fixed some issues with going back in history.
+
+## [2.0.0]
+
+* Removed `makeHydratable()` in favor of `historySession()` reducer.
+* Removed historyCache in favor of putting everything in redux.
+
 ## [1.4.0]
 
 * Update `lodash` to 4.5.

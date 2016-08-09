@@ -8,7 +8,7 @@ import { selectActiveKey, selectHistoryState } from './reducer'
  *   Calls pushState() with location string on HISTORY_CREATE.
  *   Populates HISTORY_RESTORE action with state value.
  */
-export default function middleware(history, { getKeyState }, selectHistory = selectHistoryState) {
+export default function middleware(history, selectHistory = selectHistoryState) {
   return store => next => action => {
     if (action.type === HISTORY_CREATE && action.meta.pushState) {
       const { key, title, location } = action.payload
@@ -17,8 +17,8 @@ export default function middleware(history, { getKeyState }, selectHistory = sel
       return next(merge(action, { meta: { pushedState: true } }))
     }
     if (action.type === HISTORY_RESTORE) {
-      const activeKey = action.payload
-      const state = getKeyState(activeKey, store.getState())
+      // const activeKey = action.payload
+      const state = store.getState()
       return next({
         ...action,
         state,
