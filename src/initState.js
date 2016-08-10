@@ -1,5 +1,6 @@
 import { create, createFromBrowser } from './actions'
 import reducer from './reducer'
+import { browserHasHistory } from './select'
 
 export function defaultInitState(location, title) {
   const action = create(location, title)
@@ -9,10 +10,9 @@ export function defaultInitState(location, title) {
 export function stateFromBrowser(historyState) {
   const action = createFromBrowser(historyState)
   const state = reducer(undefined, action)
-  state.refresh = true
   return state
 }
 export default function getInitState(location, title, history) {
-  if (history.state && history.state.key) return stateFromBrowser(history.state)
+  if (browserHasHistory(history)) return stateFromBrowser(history.state)
   return defaultInitState(location, title)
 }
