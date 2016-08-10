@@ -3,7 +3,7 @@ export function selectHistoryState(state) {
 }
 
 export function selectActiveKey({ activeKey, key }) {
-  if (!key[activeKey]) throw new Error('Missing browser history')
+  if (!key[activeKey]) throw new Error(`Missing history for key ${activeKey}.`)
   return key[activeKey]
 }
 export function browserHistory(reduxHistory) {
@@ -11,6 +11,11 @@ export function browserHistory(reduxHistory) {
     ...selectActiveKey(reduxHistory),
     length: reduxHistory.length,
   }
+}
+export function historyMatch(reduxHistory, windowHistory) {
+  if (!windowHistory || !windowHistory.key) throw new Error('Missing window.history.state')
+  const activeKey = selectActiveKey(reduxHistory)
+  return activeKey.key === windowHistory.key
 }
 export function getKeyIndex(reduxHistory) {
   return selectActiveKey(reduxHistory).index
@@ -20,5 +25,6 @@ export function selectActiveKeyDefault(state) {
 }
 
 export function isNewHistory({ activeKey, lastKey, length }, browserState) {
-  return activeKey === lastKey && browserState.length === (length - 1)
+  const isActiveLast = activeKey === lastKey
+  return isActiveLast && browserState.length === (length - 1)
 }

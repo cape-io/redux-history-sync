@@ -1,6 +1,6 @@
 import { create, restore, hashChange } from './actions'
 import {
-  browserHistory, getKeyIndex, isNewHistory, selectActiveKey, selectHistoryState,
+  browserHistory, getKeyIndex, historyMatch, isNewHistory, selectActiveKey, selectHistoryState,
 } from './select'
 import { locationSerialize } from './utils'
 
@@ -42,32 +42,35 @@ export function syncHistoryToStore(store, selectHistory, _window) {
   _window.addEventListener('popstate', handlePopState)
 }
 
-export function historyMatch(reduxHistory, windowHistory) {
-  if (!windowHistory || !windowHistory.key || !reduxHistory.key) return false
-  return reduxHistory.key === windowHistory.key
-}
-export function createBrowserHistory(reduxHistory, pushState) {
+// New history address bar URL. Browser won't attempt to load this.
+// https://developer.mozilla.org/en-US/docs/Web/API/History_API
+// The state object can be anything that can be serialized under 640k.
+// reduxHistory is the full state.history object.
+export function changeBrowserHistory(reduxHistory, changeState) {
   const activeHistory = browserHistory(reduxHistory)
-  return pushState(activeHistory, activeHistory.title, locationSerialize(location))
+  const locationStr = locationSerialize(activeHistory.location)
+  return changeState(activeHistory, activeHistory.title, locationStr)
 }
+
 // Subscribe to store. Save new state to history key index.
 export function syncStoreHistory(store, history, selectHistory) {
   function handleStoreChange() {
-    const { go, pushState, state } = history
     const reduxHistory = selectHistory(store.getState())
     // Look for redux change.
-    if (historyMatch(reduxHistory, state)) return undefined
+    if (historyMatch(reduxHistory, history.state)) return undefined
     // Save new state to history key index.
-    if (isNewHistory(reduxHistory, state)) return createBrowserHistory(reduxHistory, pushState)
+    if (isNewHistory(reduxHistory, history.state)) {
+      return changeBrowserHistory(reduxHistory, history.pushState.bind(history))
+    }
     // What is the index of the history key in the Redux store?
     const storeIndex = getKeyIndex(reduxHistory)
     // What is the index of the browser?
-    const browserIndex = state.index
+    const browserIndex = history.state.index
     // Tell browser to move forward or backward based on activeKey changes.
     // How far back or forward do we need to move the browser?
     const goBy = storeIndex - browserIndex
-    console.log('Move browser history', goBy)
-    return go(goBy)
+    // console.log('Move browser history', goBy)
+    return history.go(goBy)
   }
   store.subscribe(handleStoreChange)
 }
@@ -92,14 +95,8 @@ export default function syncHistoryWithStore(store, _window, {
       'your reducers.'
     )
   }
-  // { index, key, title, location }
-  const state = selectActiveKey(historyState)
-  // New history address bar URL. Browser won't attempt to load this.
-  const locationStr = locationSerialize(state.location)
-  // https://developer.mozilla.org/en-US/docs/Web/API/History_API
-  // The state object can be anything that can be serialized under 640k.
   // We want to make sure the window history state matches Redux initially.
-  _window.history.replaceState(state, state.title, locationStr)
+  changeBrowserHistory(historyState, _window.history.replaceState.bind(history))
   // Sync Redux -> Browser History
   syncStoreHistory(store, _window.history, selectHistory)
   // Sync Browser History -> Redux
