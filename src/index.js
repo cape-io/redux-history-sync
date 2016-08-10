@@ -6,12 +6,9 @@ export {
   restore as restoreHistory,
 } from './actions'
 export historyMiddleware from './middleware'
-export historyReducer, {
-  selectActiveKey,
-  selectActiveKeyDefault,
-  selectHistoryState,
-  getInitState,
-} from './reducer'
+export getInitState from './initState'
+export historyReducer from './reducer'
+export * from './select'
 export syncHistoryWithStore from './sync'
 export { newKey, locationSerialize, parseUrl } from './utils'
 

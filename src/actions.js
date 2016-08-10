@@ -41,7 +41,12 @@ export function create(_location, title, key = null, pushState = true) {
     },
   }
 }
-
+export function createFromBrowser(historyState) {
+  return {
+    type: HISTORY_CREATE,
+    payload: historyState,
+  }
+}
 /**
  * Currently this is private. Called when user changes hash in address bar.
  */
