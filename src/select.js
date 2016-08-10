@@ -1,14 +1,26 @@
+import isUndefined from 'lodash/isUndefined'
+import { initState } from './reducer'
+
 export function selectHistoryState(state) {
   return state.history
 }
-export function selectActiveKey({ activeKey, key }) {
-  if (!key[activeKey]) throw new Error(`Missing history for key ${activeKey}.`)
-  return key[activeKey]
+export function getKey(keyType) {
+  if (isUndefined(initState[keyType])) throw new Error('Invalid keyType.')
+  return state => {
+    const key = state[keyType]
+    if (!key) throw new Error(`Missing history for ${keyType} key ${key}.`)
+    return key
+  }
 }
-export function selectLastKey({ lastKey, key }) {
-  if (!key[lastKey]) throw new Error(`Missing history for key ${lastKey}.`)
-  return key[lastKey]
+export const selectActiveKey = getKey('activeKey')
+export const selectFirstKey = getKey('firstKey')
+export const selectLastKey = getKey('lastKey')
+export function getIndex(selectKey) {
+  return state => selectKey(state).index
 }
+export const getFirstIndex = getIndex(selectFirstKey)
+export const getKeyIndex = getIndex(selectActiveKey)
+export const getLastIndex = getIndex(selectLastKey)
 export function selectActiveKeyDefault(state) {
   return selectActiveKey(selectHistoryState(state))
 }
@@ -19,12 +31,6 @@ export function historyMatch(reduxHistory, windowHistory) {
 }
 export function keyMatch(reduxHistory, windowHistory) {
   return reduxHistory.activeKey === windowHistory.id
-}
-export function getKeyIndex(reduxHistory) {
-  return selectActiveKey(reduxHistory).index
-}
-export function getLastIndex(reduxHistory) {
-  return selectLastKey(reduxHistory).index
 }
 export function getLength(reduxHistory) {
   if (!reduxHistory.lastKey) return 0
@@ -45,4 +51,7 @@ export function browserHistory(reduxHistory) {
 }
 export function lengthMatch(reduxHistory, windowHistory) {
   return getLength(reduxHistory) === windowHistory.length
+}
+export function browserHasHistory(windowHistory) {
+  return windowHistory.state && windowHistory.state.id
 }
