@@ -8,7 +8,7 @@ import { locationSerialize } from './utils'
 export function createPopListener(listener, reset) {
   return event => {
     // console.log(event)
-    if (event.state && event.state.key) {
+    if (event.state && event.state.id) {
       listener(event.state, event.type)
     } else if (reset) {
       reset()
@@ -28,7 +28,7 @@ export function changeBrowserHistory(reduxHistory, changeState) {
 export function createHistoryListener(store, selectHistory, replaceState) {
   return windowHistory => {
     const historyState = selectHistory(store.getState())
-    const storeHasKey = historyState.key[windowHistory.key]
+    const storeHasKey = historyState.key[windowHistory.id]
     // Back/Forward after a page refresh.
     if (!storeHasKey) return store.dispatch(createFromBrowser(windowHistory))
     // Change came from here.
@@ -36,7 +36,7 @@ export function createHistoryListener(store, selectHistory, replaceState) {
       return changeBrowserHistory(historyState, replaceState)
     }
     // Back/Forward
-    return store.dispatch(restore(windowHistory.key, false))
+    return store.dispatch(restore(windowHistory.id, false))
   }
 }
 export function createHashListener(store, selectHistory, getHash) {

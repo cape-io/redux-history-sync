@@ -12,20 +12,10 @@ export function selectLastKey({ lastKey, key }) {
 export function selectActiveKeyDefault(state) {
   return selectActiveKey(selectHistoryState(state))
 }
-
-export function browserHistory(reduxHistory) {
-  return {
-    ...selectActiveKey(reduxHistory),
-    length: reduxHistory.length,
-  }
-}
 export function historyMatch(reduxHistory, windowHistory) {
   if (!windowHistory || !windowHistory.id) throw new Error('Missing window.history.state')
   const activeKey = selectActiveKey(reduxHistory)
   return activeKey.id === windowHistory.id
-}
-export function lengthMatch(reduxHistory, windowHistory) {
-  return reduxHistory.length === windowHistory.length
 }
 export function keyMatch(reduxHistory, windowHistory) {
   return reduxHistory.activeKey === windowHistory.id
@@ -40,7 +30,19 @@ export function getLength(reduxHistory) {
   if (!reduxHistory.lastKey) return 0
   return getLastIndex(reduxHistory) + 1
 }
-export function isNewHistory({ activeKey, lastKey, length }, browserState) {
-  const isActiveLast = activeKey === lastKey
-  return isActiveLast && browserState.length === (length - 1)
+export function activeLastMatch({ activeKey, lastKey }) {
+  return activeKey === lastKey
+}
+export function isNewHistory(reduxHistory, browserState) {
+  const length = getLength(reduxHistory)
+  return activeLastMatch(reduxHistory) && browserState.length === (length - 1)
+}
+export function browserHistory(reduxHistory) {
+  return {
+    ...selectActiveKey(reduxHistory),
+    length: getLength(reduxHistory),
+  }
+}
+export function lengthMatch(reduxHistory, windowHistory) {
+  return getLength(reduxHistory) === windowHistory.length
 }
