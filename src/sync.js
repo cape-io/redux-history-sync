@@ -1,4 +1,4 @@
-import { create, restore, hashChange } from './actions'
+import { createFromBrowser, restore, hashChange } from './actions'
 import {
   browserHistory, getKeyIndex, historyMatch, isNewHistory, selectActiveKey, selectHistoryState,
 } from './select'
@@ -14,22 +14,35 @@ export function createPopListener(listener, reset) {
     }
   }
 }
+// New history address bar URL. Browser won't attempt to load this.
+// https://developer.mozilla.org/en-US/docs/Web/API/History_API
+// The state object can be anything that can be serialized under 640k.
+// reduxHistory is the full state.history object.
+export function changeBrowserHistory(reduxHistory, changeState) {
+  const activeHistory = browserHistory(reduxHistory)
+  const locationStr = locationSerialize(activeHistory.location)
+  return changeState(activeHistory, activeHistory.title, locationStr)
+}
+
+export function createHistoryListener(store, selectHistory, replaceState) {
+  return windowHistory => {
+    const historyState = selectHistory(store.getState())
+    const storeHasKey = historyState.key[windowHistory.key]
+    // Back/Forward after a page refresh.
+    if (!storeHasKey) return store.dispatch(createFromBrowser(windowHistory))
+    // Change came from here.
+    if (historyState.activeKey === windowHistory.key) {
+      return changeBrowserHistory(historyState, replaceState)
+    }
+    // Back/Forward
+    return store.dispatch(restore(windowHistory.key, false))
+  }
+}
 
 export function syncHistoryToStore(store, selectHistory, _window) {
-  function handleHistoryChange({ key, title, location }) {
-    const historyState = selectHistory(store.getState())
-    // Make sure the change isn't from DevTools.
-    if (historyState.activeKey === key) {
-      return
-    }
-    const storeHasKey = historyState.key[key]
-    if (storeHasKey) {
-      store.dispatch(restore(key, false))
-    } else {
-      // @TODO Check to see if we have a copy in chache.
-      store.dispatch(create(location, title, key, false))
-    }
-  }
+  const replaceState = _window.history.replaceState.bind(_window.history)
+  const handleHistoryChange = createHistoryListener(store, selectHistory, replaceState)
+
   function hashChanges() {
     const keyState = selectActiveKey(selectHistory(store.getState()))
     const stateHash = keyState.location.hash
@@ -42,16 +55,6 @@ export function syncHistoryToStore(store, selectHistory, _window) {
   _window.addEventListener('popstate', handlePopState)
 }
 
-// New history address bar URL. Browser won't attempt to load this.
-// https://developer.mozilla.org/en-US/docs/Web/API/History_API
-// The state object can be anything that can be serialized under 640k.
-// reduxHistory is the full state.history object.
-export function changeBrowserHistory(reduxHistory, changeState) {
-  const activeHistory = browserHistory(reduxHistory)
-  const locationStr = locationSerialize(activeHistory.location)
-  return changeState(activeHistory, activeHistory.title, locationStr)
-}
-
 // Subscribe to store. Save new state to history key index.
 export function syncStoreHistory(store, history, selectHistory) {
   function handleStoreChange() {
@@ -60,6 +63,7 @@ export function syncStoreHistory(store, history, selectHistory) {
     if (historyMatch(reduxHistory, history.state)) return undefined
     // Save new state to history key index.
     if (isNewHistory(reduxHistory, history.state)) {
+      console.log('new history')
       return changeBrowserHistory(reduxHistory, history.pushState.bind(history))
     }
     // What is the index of the history key in the Redux store?
@@ -69,8 +73,9 @@ export function syncStoreHistory(store, history, selectHistory) {
     // Tell browser to move forward or backward based on activeKey changes.
     // How far back or forward do we need to move the browser?
     const goBy = storeIndex - browserIndex
-    // console.log('Move browser history', goBy)
-    return history.go(goBy)
+    console.log('Move browser history', goBy)
+    history.go(goBy)
+    return undefined
   }
   store.subscribe(handleStoreChange)
 }
