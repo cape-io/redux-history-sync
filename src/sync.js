@@ -1,6 +1,6 @@
 import { createFromBrowser, restore, hashChange } from './actions'
 import {
-  browserHistory, getKeyIndex, historyMatch, keyMatch, lengthMatch,
+  browserHasHistory, browserHistory, getKeyIndex, historyMatch, keyMatch, lengthMatch,
   isNewHistory, selectActiveKey, selectHistoryState,
 } from './select'
 import { locationSerialize } from './utils'
@@ -8,8 +8,8 @@ import { locationSerialize } from './utils'
 export function createPopListener(listener, reset) {
   return event => {
     // console.log(event)
-    if (event.state && event.state.id) {
-      listener(event.state, event.type)
+    if (browserHasHistory(event)) {
+      listener(event.state)
     } else if (reset) {
       reset()
     }
