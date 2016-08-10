@@ -1,43 +1,52 @@
-import { HISTORY_CREATE, HISTORY_RESTORE } from './actions'
+import isFunction from 'lodash/isFunction'
+
+import { HISTORY_CREATE, HISTORY_LEARN, HISTORY_RESTORE } from './actions'
+import { getLength } from './select'
 
 export const initialState = {
   activeKey: null,
-  refresh: false,
   firstKey: null,
-  lastKey: null,
-  length: 0,
   key: {},
+  lastKey: null,
+  refresh: false,
+}
+export function createNewState({ firstKey, refresh }, { id }, key) {
+  return {
+    activeKey: id,
+    firstKey: firstKey || id,
+    key,
+    lastKey: id,
+    refresh,
+  }
+}
+export function createNewHistory(historyKeys, { location, id, title }, index) {
+  return {
+    ...historyKeys,
+    [id]: {
+      index,
+      location,
+      id,
+      title,
+    },
+  }
+}
+function historyCreate(state, payload) {
+  const key = createNewHistory(state, payload, getLength(state))
+  return createNewState(state, payload, key)
+}
+function historyLearn(state, payload) {
+  const key = createNewHistory(state, payload, payload.index)
+  return createNewState(state, payload, key)
+}
+const reducers = {
+  [HISTORY_CREATE]: historyCreate,
+  [HISTORY_LEARN]: historyLearn,
+  [HISTORY_RESTORE]: (state, payload) => ({ ...state, activeKey: payload }),
 }
 /**
  * This reducer will update the state with the most recent history key and location.
  */
 export default function reducer(state = initialState, action) {
-  if (!action.type || !action.payload) {
-    return state
-  }
-  const { payload, type } = action
-  const { index, key, title } = payload
-  switch (type) {
-    case HISTORY_RESTORE:
-      return { ...state, activeKey: payload }
-    case HISTORY_CREATE:
-      return {
-        ...state,
-        firstKey: state.firstKey || key,
-        activeKey: key,
-        lastKey: key,
-        length: state.length + 1,
-        key: {
-          ...state.key,
-          [key]: {
-            index: index || state.length,
-            key,
-            title,
-            location: payload.location,
-          },
-        },
-      }
-    default:
-      return state
-  }
+  if (action.error || !action.type || !isFunction(reducers[action.type])) return state
+  return reducers[action.type](state, action.payload)
 }

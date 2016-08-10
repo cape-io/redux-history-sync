@@ -5,7 +5,7 @@ import pickBy from 'lodash/pickBy'
 const hasWindowGlobal = typeof window === 'object'
 const hasRequireGlobal = typeof require === 'function'
 
-export function newKey() {
+export function newId() {
   return Math.random().toString(36).substr(7)
 }
 /**
