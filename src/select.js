@@ -2,8 +2,10 @@ export function selectHistoryState(state) {
   return state.history
 }
 export function getKey(keyType) {
-  return state => {
-    const key = state.key[state[keyType]]
+  return (state, emptyKey = null) => {
+    const keyId = state[keyType]
+    if (keyId === null) return emptyKey
+    const key = state.key[keyId]
     if (!key) throw new Error(`Missing history for ${keyType} key ${key}.`)
     return key
   }
@@ -12,7 +14,7 @@ export const selectActiveKey = getKey('activeKey')
 export const selectFirstKey = getKey('firstKey')
 export const selectLastKey = getKey('lastKey')
 export function getIndex(selectKey) {
-  return state => selectKey(state).index
+  return state => selectKey(state, { index: 0 }).index
 }
 export const getFirstIndex = getIndex(selectFirstKey)
 export const getKeyIndex = getIndex(selectActiveKey)
