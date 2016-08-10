@@ -1,12 +1,13 @@
 import { createFromBrowser, restore, hashChange } from './actions'
 import {
-  browserHistory, getKeyIndex, historyMatch, isNewHistory, selectActiveKey, selectHistoryState,
+  browserHistory, getKeyIndex, historyMatch, keyMatch, lengthMatch,
+  isNewHistory, selectActiveKey, selectHistoryState,
 } from './select'
 import { locationSerialize } from './utils'
 
 export function createPopListener(listener, reset) {
   return event => {
-    console.log(event)
+    // console.log(event)
     if (event.state && event.state.key) {
       listener(event.state, event.type)
     } else if (reset) {
@@ -31,7 +32,7 @@ export function createHistoryListener(store, selectHistory, replaceState) {
     // Back/Forward after a page refresh.
     if (!storeHasKey) return store.dispatch(createFromBrowser(windowHistory))
     // Change came from here.
-    if (historyState.activeKey === windowHistory.key) {
+    if (keyMatch(historyState, windowHistory)) {
       return changeBrowserHistory(historyState, replaceState)
     }
     // Back/Forward
@@ -63,11 +64,18 @@ export function syncStoreHistory(store, history, selectHistory) {
   function handleStoreChange() {
     const reduxHistory = selectHistory(store.getState())
     // Look for redux change.
-    if (historyMatch(reduxHistory, history.state)) return undefined
+    if (historyMatch(reduxHistory, history.state)) {
+      if (!lengthMatch(reduxHistory, history.state)) {
+        console.log('replace window history length value.')
+        changeBrowserHistory(reduxHistory, history.replaceState.bind(history))
+      }
+      return 1
+    }
     // Save new state to history key index.
     if (isNewHistory(reduxHistory, history.state)) {
       console.log('new history')
-      return changeBrowserHistory(reduxHistory, history.pushState.bind(history))
+      changeBrowserHistory(reduxHistory, history.pushState.bind(history))
+      return 2
     }
     // What is the index of the history key in the Redux store?
     const storeIndex = getKeyIndex(reduxHistory)
@@ -78,7 +86,7 @@ export function syncStoreHistory(store, history, selectHistory) {
     const goBy = storeIndex - browserIndex
     console.log('Move browser history', goBy)
     history.go(goBy)
-    return undefined
+    return 3
   }
   store.subscribe(handleStoreChange)
 }

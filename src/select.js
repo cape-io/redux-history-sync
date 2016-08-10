@@ -17,6 +17,12 @@ export function historyMatch(reduxHistory, windowHistory) {
   const activeKey = selectActiveKey(reduxHistory)
   return activeKey.key === windowHistory.key
 }
+export function lengthMatch(reduxHistory, windowHistory) {
+  return reduxHistory.length === windowHistory.length
+}
+export function keyMatch(reduxHistory, windowHistory) {
+  return reduxHistory.activeKey === windowHistory.key
+}
 export function getKeyIndex(reduxHistory) {
   return selectActiveKey(reduxHistory).index
 }
