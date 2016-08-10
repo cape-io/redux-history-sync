@@ -1,4 +1,4 @@
-const historyState = {
+export const historyState = {
   index: 0,
   key: 'cra6ls8zpg2glcp611yvi',
   location: {

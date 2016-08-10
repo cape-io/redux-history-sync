@@ -10,6 +10,6 @@ export getInitState from './initState'
 export historyReducer from './reducer'
 export * from './select'
 export syncHistoryWithStore from './sync'
-export { newKey, locationSerialize, parseUrl } from './utils'
+export { newId, locationSerialize, parseUrl } from './utils'
 
 export Link from './Link'

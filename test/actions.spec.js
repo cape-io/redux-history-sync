@@ -11,16 +11,16 @@ test('getLocationObject() should', assert => {
 
 test('create() action creator should', assert => {
   const title = 'Kittens'
-  const key = 'ookz9llerk9'
+  const id = 'ookz9llerk9'
   const result = {
-    type: '@@history/CREATE',
+    type: 'history/CREATE',
     payload: {
       title,
       location: { pathname: '/foo', hash: '#xk', search: '' },
-      key,
+      id,
     },
     meta: { pushState: true },
   }
-  assert.deepEqual(create(location, title, key), result, 'create valid action.')
+  assert.deepEqual(create(location, title, id), result, 'create valid action.')
   assert.end()
 })

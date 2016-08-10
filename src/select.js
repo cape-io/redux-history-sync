@@ -37,6 +37,7 @@ export function getLastIndex(reduxHistory) {
   return selectLastKey(reduxHistory).index
 }
 export function getLength(reduxHistory) {
+  if (!reduxHistory.lastKey) return 0
   return getLastIndex(reduxHistory) + 1
 }
 export function isNewHistory({ activeKey, lastKey, length }, browserState) {

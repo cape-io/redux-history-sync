@@ -5,3 +5,6 @@ export const location = {
   hash: '#xk',
   pathname: '/foo',
 }
+export const history = {
+  state: null,
+}
