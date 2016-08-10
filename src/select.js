@@ -1,13 +1,9 @@
-import isUndefined from 'lodash/isUndefined'
-import { initState } from './reducer'
-
 export function selectHistoryState(state) {
   return state.history
 }
 export function getKey(keyType) {
-  if (isUndefined(initState[keyType])) throw new Error('Invalid keyType.')
   return state => {
-    const key = state[keyType]
+    const key = state.key[state[keyType]]
     if (!key) throw new Error(`Missing history for ${keyType} key ${key}.`)
     return key
   }

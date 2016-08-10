@@ -1,14 +1,14 @@
-export const historyState = {
-  index: 0,
-  key: 'cra6ls8zpg2glcp611yvi',
-  location: {
-    hash: '',
-    hostname: 'localhost',
-    origin: 'http://localhost:3000',
-    pathname: '/',
-    port: '3000',
-    protocol: 'http:',
-    search: '',
-  },
-  title: 'Site Title Here',
-}
+import test from 'tape'
+
+import { learnedState } from './mock'
+import { getKeyIndex, selectActiveKey } from '../src'
+
+test('selectActiveKey', t => {
+  const activeKey = selectActiveKey(learnedState)
+  t.equal(activeKey.id, 'cra6ls8zpg2glcp611yvi', 'activeKey id')
+  t.end()
+})
+test('getKeyIndex', t => {
+  t.equal(getKeyIndex(learnedState), 1, 'activeKey index')
+  t.end()
+})
