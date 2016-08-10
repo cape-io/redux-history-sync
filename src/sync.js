@@ -1,18 +1,18 @@
 import { create, restore, hashChange } from './actions'
-import { selectActiveKey, selectHistoryState } from './reducer'
+import {
+  browserHistory, getKeyIndex, isNewHistory, selectActiveKey, selectHistoryState,
+} from './select'
 import { locationSerialize } from './utils'
 
-export function addPopListener(addEventListener, listener, reset) {
-  function handlePopState(event) {
+export function createPopListener(listener, reset) {
+  return event => {
+    console.log(event)
     if (event.state && event.state.key) {
-      // console.log('state', event.type)
       listener(event.state, event.type)
     } else if (reset) {
-      // console.log('reset')
       reset()
     }
   }
-  addEventListener('popstate', handlePopState, false)
 }
 
 export function syncHistoryToStore(store, selectHistory, _window) {
@@ -38,38 +38,43 @@ export function syncHistoryToStore(store, selectHistory, _window) {
     }
   }
   // Listen for browser history forward/back changes.
-  addPopListener(_window.addEventListener, handleHistoryChange, hashChanges)
+  const handlePopState = createPopListener(handleHistoryChange, hashChanges)
+  _window.addEventListener('popstate', handlePopState)
 }
 
-export function getKeyIndex(historyState, key) {
-  return historyState.key[key].index
+export function historyMatch(reduxHistory, windowHistory) {
+  if (!windowHistory || !windowHistory.key || !reduxHistory.key) return false
+  return reduxHistory.key === windowHistory.key
 }
-
+export function createBrowserHistory(reduxHistory, pushState) {
+  const activeHistory = browserHistory(reduxHistory)
+  return pushState(activeHistory, activeHistory.title, locationSerialize(location))
+}
 // Subscribe to store. Save new state to history key index.
-export function syncStoreHistory(store, selectHistory, _window) {
+export function syncStoreHistory(store, history, selectHistory) {
   function handleStoreChange() {
+    const { go, pushState, state } = history
+    const reduxHistory = selectHistory(store.getState())
+    // Look for redux change.
+    if (historyMatch(reduxHistory, state)) return undefined
     // Save new state to history key index.
-    const state = store.getState()
-    const historyState = selectHistory(state)
-    const { activeKey } = historyState
-    const browserKey = _window.history.state.key
-    // Tell browser to move forward or backward based DevTools changes.
-    if (browserKey !== activeKey) {
-      // What is the index of the browser?
-      const browserIndex = getKeyIndex(historyState, browserKey)
-      // What is the index of the history key in the Redux store?
-      const storeIndex = getKeyIndex(historyState, activeKey)
-      // How far back or forward do we need to move the browser?
-      const goBy = storeIndex - browserIndex
-      console.log('Navigate browser', goBy)
-      _window.history.go(goBy)
-    }
+    if (isNewHistory(reduxHistory, state)) return createBrowserHistory(reduxHistory, pushState)
+    // What is the index of the history key in the Redux store?
+    const storeIndex = getKeyIndex(reduxHistory)
+    // What is the index of the browser?
+    const browserIndex = state.index
+    // Tell browser to move forward or backward based on activeKey changes.
+    // How far back or forward do we need to move the browser?
+    const goBy = storeIndex - browserIndex
+    console.log('Move browser history', goBy)
+    return go(goBy)
   }
   store.subscribe(handleStoreChange)
 }
 
 /**
  * This function saves and restores state with history navigation changes.
+ * Externally available.
  */
 export default function syncHistoryWithStore(store, _window, {
   selectHistory = selectHistoryState,
@@ -87,10 +92,16 @@ export default function syncHistoryWithStore(store, _window, {
       'your reducers.'
     )
   }
+  // { index, key, title, location }
   const state = selectActiveKey(historyState)
+  // New history address bar URL. Browser won't attempt to load this.
   const locationStr = locationSerialize(state.location)
-
+  // https://developer.mozilla.org/en-US/docs/Web/API/History_API
+  // The state object can be anything that can be serialized under 640k.
+  // We want to make sure the window history state matches Redux initially.
   _window.history.replaceState(state, state.title, locationStr)
-  syncStoreHistory(store, selectHistory, _window)
+  // Sync Redux -> Browser History
+  syncStoreHistory(store, _window.history, selectHistory)
+  // Sync Browser History -> Redux
   syncHistoryToStore(store, selectHistory, _window)
 }
