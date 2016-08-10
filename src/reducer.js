@@ -22,6 +22,7 @@ export default function reducer(state = initialState, action) {
       return { ...state, activeKey: payload }
     case HISTORY_CREATE:
       return {
+        ...state,
         firstKey: state.firstKey || key,
         activeKey: key,
         lastKey: key,
