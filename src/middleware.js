@@ -1,29 +1,13 @@
-import merge from 'lodash/merge'
-
 import { locationSerialize } from './utils'
-import { HISTORY_CREATE, HISTORY_RESTORE, HISTORY_HASH_CHANGE, create } from './actions'
-import { selectActiveKey, selectHistoryState } from './reducer'
+import { HISTORY_HASH_CHANGE, create } from './actions'
+import { selectActiveKey, selectHistoryState } from './select'
+
 /**
  * This middleware:
  *   Calls pushState() with location string on HISTORY_CREATE.
- *   Populates HISTORY_RESTORE action with state value.
  */
 export default function middleware(history, selectHistory = selectHistoryState) {
   return store => next => action => {
-    if (action.type === HISTORY_CREATE && action.meta.pushState) {
-      const { key, title, location } = action.payload
-      const newLocationString = locationSerialize(location)
-      history.pushState({ key, location, title }, title, newLocationString)
-      return next(merge(action, { meta: { pushedState: true } }))
-    }
-    if (action.type === HISTORY_RESTORE) {
-      // const activeKey = action.payload
-      const state = store.getState()
-      return next({
-        ...action,
-        state,
-      })
-    }
     // A new history entry was added to browser, [sigh] mirror in Redux.
     if (action.type === HISTORY_HASH_CHANGE) {
       // We need all the info from current key.
