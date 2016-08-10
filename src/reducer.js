@@ -1,8 +1,10 @@
-import { HISTORY_CREATE, HISTORY_RESTORE, create } from './actions'
+import { HISTORY_CREATE, HISTORY_RESTORE } from './actions'
 
-const initialState = {
+export const initialState = {
   activeKey: null,
+  refresh: false,
   firstKey: null,
+  lastKey: null,
   length: 0,
   key: {},
 }
@@ -14,7 +16,7 @@ export default function reducer(state = initialState, action) {
     return state
   }
   const { payload, type } = action
-  const { key, title } = payload
+  const { index, key, title } = payload
   switch (type) {
     case HISTORY_RESTORE:
       return { ...state, activeKey: payload }
@@ -22,11 +24,12 @@ export default function reducer(state = initialState, action) {
       return {
         firstKey: state.firstKey || key,
         activeKey: key,
+        lastKey: key,
         length: state.length + 1,
         key: {
           ...state.key,
           [key]: {
-            index: state.length,
+            index: index || state.length,
             key,
             title,
             location: payload.location,
@@ -36,23 +39,4 @@ export default function reducer(state = initialState, action) {
     default:
       return state
   }
-}
-
-export function getInitState(location, title) {
-  const action = create(location, title)
-  const state = reducer(undefined, action)
-  return state
-}
-
-export function selectHistoryState(state) {
-  return state.history
-}
-
-export function selectActiveKey(historyState) {
-  const { activeKey, key } = historyState
-  return key[activeKey]
-}
-
-export function selectActiveKeyDefault(state) {
-  return selectActiveKey(selectHistoryState(state))
 }
