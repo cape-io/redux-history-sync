@@ -38,18 +38,21 @@ export function createHistoryListener(store, selectHistory, replaceState) {
     return store.dispatch(restore(windowHistory.key, false))
   }
 }
-
+export function createHashListener(store, selectHistory, getHash) {
+  return () => {
+    const keyState = selectActiveKey(selectHistory(store.getState()))
+    const stateHash = keyState.location.hash
+    const browserHash = getHash()
+    if (browserHash !== stateHash) {
+      store.dispatch(hashChange(browserHash))
+    }
+  }
+}
 export function syncHistoryToStore(store, selectHistory, _window) {
   const replaceState = _window.history.replaceState.bind(_window.history)
   const handleHistoryChange = createHistoryListener(store, selectHistory, replaceState)
-
-  function hashChanges() {
-    const keyState = selectActiveKey(selectHistory(store.getState()))
-    const stateHash = keyState.location.hash
-    if (_window.location.hash !== stateHash) {
-      store.dispatch(hashChange(_window.location.hash))
-    }
-  }
+  function getHash() { return _window.location.hash }
+  const hashChanges = createHashListener(store, selectHistory, getHash)
   // Listen for browser history forward/back changes.
   const handlePopState = createPopListener(handleHistoryChange, hashChanges)
   _window.addEventListener('popstate', handlePopState)
