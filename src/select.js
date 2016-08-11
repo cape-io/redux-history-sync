@@ -40,9 +40,10 @@ export function getLength(reduxHistory) {
 export function activeLastMatch({ activeKey, lastKey }) {
   return activeKey === lastKey
 }
-export function isNewHistory(reduxHistory, browserState) {
-  const length = getLength(reduxHistory)
-  return activeLastMatch(reduxHistory) && browserState.length === (length - 1)
+export function isNewHistory(reduxHistory) {
+  // const length = getLength(reduxHistory)
+  // console.log(browserState.length, length)
+  return activeLastMatch(reduxHistory)// && browserState.length === (length - 1)
 }
 export function browserHistory(reduxHistory) {
   return {

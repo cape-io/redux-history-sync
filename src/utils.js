@@ -27,7 +27,7 @@ export function parseUrlBrowser(string) {
   return getLocationObject(url)
 }
 export function parseUrlNode(string) {
-  const { parse } = require('url')
+  const { parse } = require('url') // eslint-disable-line global-require
   return getLocationObject(parse(string))
 }
 export function parseUrl(string) {
