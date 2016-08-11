@@ -1,7 +1,8 @@
 import isFunction from 'lodash/isFunction'
+import omitBy from 'lodash/omitBy'
 
 import { HISTORY_CREATE, HISTORY_LEARN, HISTORY_RESTORE } from './actions'
-import { getFirstIndex, getLastIndex, getLength } from './select'
+import { getFirstIndex, getLastIndex, getKeyIndex } from './select'
 
 export const initState = {
   activeKey: null,
@@ -19,19 +20,23 @@ export function createNewState({ firstKey, refresh }, { id }, key) {
     refresh,
   }
 }
-export function createNewHistory({ key }, { location, id, title }, index) {
-  return {
-    ...key,
-    [id]: {
-      index,
-      location,
-      id,
-      title,
-    },
+export function removeForwardItems(items, index) {
+  return omitBy(items, item => item.index >= index)
+}
+export function createNewHistory({ key }, { location, id, title, lastVisit }, index) {
+  // Remove all entries with index equal or more.
+  const items = removeForwardItems(key, index)
+  items[id] = {
+    index,
+    lastVisit,
+    location,
+    id,
+    title,
   }
+  return items
 }
 export function historyCreate(state, payload) {
-  const key = createNewHistory(state, payload, getLength(state))
+  const key = createNewHistory(state, payload, getKeyIndex(state) + 1)
   return createNewState(state, payload, key)
 }
 export function getLastKey(state, { id, index }) {
@@ -59,10 +64,23 @@ function historyLearn(state, payload) {
   const key = createNewHistory(state, payload, payload.index)
   return learnState(state, payload, key)
 }
+function historyRestore({ key, ...state }, activeKey) {
+  return {
+    ...state,
+    activeKey,
+    key: {
+      ...key,
+      [activeKey]: {
+        ...key[activeKey],
+        lastVisit: Date.now(),
+      },
+    },
+  }
+}
 const reducers = {
   [HISTORY_CREATE]: historyCreate,
   [HISTORY_LEARN]: historyLearn,
-  [HISTORY_RESTORE]: (state, payload) => ({ ...state, activeKey: payload }),
+  [HISTORY_RESTORE]: historyRestore,
 }
 /**
  * This reducer will update the state with the most recent history key and location.

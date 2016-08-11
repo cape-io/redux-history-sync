@@ -27,14 +27,16 @@ export function changeBrowserHistory(reduxHistory, changeState) {
 
 export function createHistoryListener(store, selectHistory, replaceState) {
   return windowHistory => {
-    const historyState = selectHistory(store.getState())
-    const storeHasKey = historyState.key[windowHistory.id]
+    const reduxHistory = selectHistory(store.getState())
+    const storeHasKey = reduxHistory.key[windowHistory.id]
     // Back/Forward after a page refresh.
     if (!storeHasKey) return store.dispatch(createFromBrowser(windowHistory))
     // Change came from here.
-    if (keyMatch(historyState, windowHistory)) {
-      return changeBrowserHistory(historyState, replaceState)
+    if (keyMatch(reduxHistory, windowHistory)) {
+      console.log('redux update loop')
+      return changeBrowserHistory(reduxHistory, replaceState)
     }
+    console.log('history restore', reduxHistory.activeKey, windowHistory.id)
     // Back/Forward
     return store.dispatch(restore(windowHistory.id, false))
   }
@@ -61,8 +63,11 @@ export function syncHistoryToStore(store, selectHistory, _window) {
 
 // Subscribe to store. Save new state to history key index.
 export function syncStoreHistory(store, history, selectHistory) {
+  let previousHistory = {}
   function handleStoreChange() {
     const reduxHistory = selectHistory(store.getState())
+    if (reduxHistory === previousHistory) return 0
+    previousHistory = reduxHistory
     // Look for redux change.
     if (historyMatch(reduxHistory, history.state)) {
       if (!lengthMatch(reduxHistory, history.state)) {
@@ -84,7 +89,7 @@ export function syncStoreHistory(store, history, selectHistory) {
     // Tell browser to move forward or backward based on activeKey changes.
     // How far back or forward do we need to move the browser?
     const goBy = storeIndex - browserIndex
-    console.log('Move browser history', goBy)
+    console.log('Move browser history', storeIndex, browserIndex, goBy)
     history.go(goBy)
     return 3
   }
