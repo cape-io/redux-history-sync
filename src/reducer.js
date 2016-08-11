@@ -35,11 +35,13 @@ export function historyCreate(state, payload) {
   return createNewState(state, payload, key)
 }
 export function getLastKey(state, { id, index }) {
+  if (!state.lastKey) return id
   const lastIndex = getLastIndex(state)
   if (index > lastIndex) return id
   return state.lastKey
 }
 export function getFirstKey(state, { id, index }) {
+  if (!state.firstKey) return id
   const firstIndex = getFirstIndex(state)
   if (index < firstIndex) return id
   return state.firstKey
@@ -55,7 +57,7 @@ export function learnState(state, payload, key) {
 }
 function historyLearn(state, payload) {
   const key = createNewHistory(state, payload, payload.index)
-  return createNewState(state, payload, key)
+  return learnState(state, payload, key)
 }
 const reducers = {
   [HISTORY_CREATE]: historyCreate,

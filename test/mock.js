@@ -1,4 +1,3 @@
-import { stateFromBrowser } from '../src/initState'
 
 export const location = {
   some: 'stuff',
@@ -23,4 +22,3 @@ export const historyState = {
   },
   title: 'Site Title Here',
 }
-export const learnedState = stateFromBrowser(historyState)

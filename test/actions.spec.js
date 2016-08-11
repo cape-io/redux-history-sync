@@ -1,7 +1,7 @@
 import test from 'tape'
-import { create } from '../src/actions'
+import { create, createFromBrowser } from '../src/actions'
 import { getLocationObject } from '../src/utils'
-import { location } from './mock'
+import { location, historyState } from './mock'
 
 test('getLocationObject() should', assert => {
   const result = { pathname: '/foo', hash: '#xk' }
@@ -23,4 +23,11 @@ test('create() action creator should', assert => {
   }
   assert.deepEqual(create(location, title, id), result, 'create valid action.')
   assert.end()
+})
+
+test('createFromBrowser', t => {
+  const action = createFromBrowser(historyState)
+  t.equal(action.payload, historyState, 'payload match')
+  t.equal(action.type, 'history/HISTORY_LEARN', 'type match')
+  t.end()
 })
