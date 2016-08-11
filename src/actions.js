@@ -31,6 +31,7 @@ export function create(_location, title, id = null, pushState = true) {
   return {
     type: HISTORY_CREATE,
     payload: {
+      lastVisit: Date.now(),
       title: title || '',
       location: defaults(loc, defaultLoc),
       id: id || newId(),
