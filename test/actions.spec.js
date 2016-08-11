@@ -1,4 +1,6 @@
 import test from 'tape'
+import omit from 'lodash/omit'
+
 import { create, createFromBrowser } from '../src/actions'
 import { getLocationObject } from '../src/utils'
 import { location, historyState } from './mock'
@@ -9,9 +11,11 @@ test('getLocationObject() should', assert => {
   assert.end()
 })
 
-test('create() action creator should', assert => {
+test('create() action creator should', t => {
   const title = 'Kittens'
   const id = 'ookz9llerk9'
+  const action = create(location, title, id)
+  t.ok(action.payload.lastVisit && action.payload.lastVisit > 1470888200753)
   const result = {
     type: 'history/CREATE',
     payload: {
@@ -21,8 +25,9 @@ test('create() action creator should', assert => {
     },
     meta: { pushState: true },
   }
-  assert.deepEqual(create(location, title, id), result, 'create valid action.')
-  assert.end()
+  action.payload = omit(action.payload, 'lastVisit')
+  t.deepEqual(action, result, 'create valid action.')
+  t.end()
 })
 
 test('createFromBrowser', t => {
