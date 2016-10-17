@@ -37,9 +37,9 @@
   },
   "dependencies": {
     "cape-redux": "^1.5.0",
-    "classnames": "^2.2.3",
+    "classnames": "^2.2.5",
     "lodash": "^4.16.4",
-    "redux": "^3.2.1"
+    "redux": "^3.6.0"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
