@@ -1,3 +1,7 @@
+## [3.0.0]
+
+* Split out link component.
+
 ## [2.0.1]
 
 * Fixed some issues with going back in history.
