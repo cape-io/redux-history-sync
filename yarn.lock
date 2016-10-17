@@ -1015,7 +1015,7 @@ cape-lodash@^1.3.0:
   dependencies:
     lodash "^4.15.0"
 
-cape-redux@^1.4.2:
+cape-redux:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/cape-redux/-/cape-redux-1.5.0.tgz#c285a86aaf6cf0ce49ad928205ae31d096e39372"
   dependencies:
