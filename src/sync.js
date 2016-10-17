@@ -6,7 +6,7 @@ import {
 import { locationSerialize } from './utils'
 
 export function createPopListener(listener, reset) {
-  return event => {
+  return (event) => {
     // console.log(event)
     if (browserHasHistory(event)) {
       listener(event.state)
@@ -26,7 +26,7 @@ export function changeBrowserHistory(reduxHistory, changeState) {
 }
 
 export function createHistoryListener(store, selectHistory, replaceState) {
-  return windowHistory => {
+  return (windowHistory) => {
     const reduxHistory = selectHistory(store.getState())
     const storeHasKey = reduxHistory.key[windowHistory.id]
     // Back/Forward after a page refresh.

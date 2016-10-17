@@ -5,13 +5,13 @@ import { create, createFromBrowser } from '../src/actions'
 import { getLocationObject } from '../src/utils'
 import { location, historyState } from './mock'
 
-test('getLocationObject() should', assert => {
+test('getLocationObject() should', (assert) => {
   const result = { pathname: '/foo', hash: '#xk' }
   assert.deepEqual(getLocationObject(location), result, 'remove extra props')
   assert.end()
 })
 
-test('create() action creator should', t => {
+test('create() action creator should', (t) => {
   const title = 'Kittens'
   const id = 'ookz9llerk9'
   const action = create(location, title, id)
@@ -30,7 +30,7 @@ test('create() action creator should', t => {
   t.end()
 })
 
-test('createFromBrowser', t => {
+test('createFromBrowser', (t) => {
   const action = createFromBrowser(historyState)
   t.equal(action.payload, historyState, 'payload match')
   t.equal(action.type, 'history/HISTORY_LEARN', 'type match')

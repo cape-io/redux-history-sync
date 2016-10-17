@@ -6,12 +6,12 @@ import reducer, {
   createNewHistory, getFirstKey, initState, learnState, removeForwardItems,
 } from '../src/reducer'
 
-test('reducer', t => {
+test('reducer', (t) => {
   const state = {}
   t.equal(reducer(state, {}), state)
   t.end()
 })
-test('removeForwardItems', t => {
+test('removeForwardItems', (t) => {
   const key = {
     a: { index: 0, id: 'a' },
     b: { index: 1, id: 'b' },
@@ -22,7 +22,7 @@ test('removeForwardItems', t => {
 })
 const payload = { location: { pathname: '/foo' }, id: 'abc123', title: 'Title', index: 1 }
 const payload2 = { location: { pathname: '/bat' }, id: 'ab12', title: 'Title', lastVisit: 100 }
-test('createNewHistory', t => {
+test('createNewHistory', (t) => {
   const key = createNewHistory(initState, payload, payload.index)
   t.equal(key.abc123.id, payload.id, 'id')
   t.equal(key.abc123.index, 1, 'index')
@@ -30,12 +30,12 @@ test('createNewHistory', t => {
   t.deepEqual(key2, { ab12: { ...payload2, index: 1 } })
   t.end()
 })
-test('getFirstKey', t => {
+test('getFirstKey', (t) => {
   const id = 'abc1234'
   t.equal(getFirstKey(initState, { id, index: 1 }), id, 'empty return payload id')
   t.end()
 })
-test('learnState', t => {
+test('learnState', (t) => {
   const key = createNewHistory(initState, payload, payload.index)
   const state = learnState(initState, payload, key)
   t.ok(state.refresh, 'refresh')
@@ -45,7 +45,7 @@ test('learnState', t => {
   t.end()
 })
 
-test('HISTORY_LEARN', t => {
+test('HISTORY_LEARN', (t) => {
   const action = createFromBrowser(historyState)
   const state = reducer(undefined, action)
   t.ok(state.refresh, 'refresh')

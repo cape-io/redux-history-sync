@@ -6,7 +6,7 @@ import { parseUrl } from '../src'
 
 // parseUrl()
 
-test('parseUrl() should', assert => {
+test('parseUrl() should', (assert) => {
   assert.deepEqual(parseUrl(), {}, 'return empty object when no arg.')
   assert.deepEqual(parseUrl('/foo/bar#hash'), { pathname: '/foo/bar', hash: '#hash' })
   assert.end()

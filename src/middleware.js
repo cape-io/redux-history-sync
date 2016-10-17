@@ -7,7 +7,7 @@ import { selectActiveKey, selectHistoryState } from './select'
  *   Calls pushState() with location string on HISTORY_CREATE.
  */
 export default function middleware(history, selectHistory = selectHistoryState) {
-  return store => next => action => {
+  return store => next => (action) => {
     // A new history entry was added to browser, [sigh] mirror in Redux.
     if (action.type === HISTORY_HASH_CHANGE) {
       // We need all the info from current key.
