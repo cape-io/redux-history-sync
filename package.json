@@ -1,6 +1,6 @@
 {
   "name": "redux-history-sync",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Keeping browser history and redux in sync",
   "homepage": "https://github.com/cape-io/redux-history-sync",
   "author": "Kai Curry <kai@cape.io> (http://www.cape.io/)",

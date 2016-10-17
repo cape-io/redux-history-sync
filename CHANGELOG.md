@@ -1,3 +1,7 @@
+## [3.0.1]
+
+* Update packages.
+
 ## [3.0.0]
 
 * Split out link component.
