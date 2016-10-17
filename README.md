@@ -40,8 +40,8 @@ Currently the best documentation is reading the source and looking at the exampl
 
 ### Actions
 
-* `createHistory`: `create(location, title, key = null, pushState = true)` This action should be dispatched when you want a new history entry.
-* `restoreHistory`: `restore(key, pushState = true)` This action should be dispatched when you want to exchange state with a previous history.
+* `createHistory(location, title, key = null, pushState = true)` This action should be dispatched when you want a new history entry.
+* `restoreHistory(key, pushState = true)` This action should be dispatched when you want to exchange state with a previous history.
 
 ### Components
 

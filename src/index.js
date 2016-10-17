@@ -11,5 +11,3 @@ export historyReducer from './reducer'
 export * from './select'
 export syncHistoryWithStore from './sync'
 export { newId, locationSerialize, parseUrl } from './utils'
-
-export Link from './Link'
