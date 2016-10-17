@@ -43,10 +43,6 @@ Currently the best documentation is reading the source and looking at the exampl
 * `createHistory(location, title, key = null, pushState = true)` This action should be dispatched when you want a new history entry.
 * `restoreHistory(key, pushState = true)` This action should be dispatched when you want to exchange state with a previous history.
 
-### Components
-
-`<Link href="/foo" />`
-
 ### Possible hacks
 
 * `getInitState(window.location, window.document.title)` Dispatch initial action on reducer for sane DevTools resets.
@@ -75,6 +71,12 @@ The address bar is a form input. It does not represent overall state. At its bes
 In the beginning the only "state" on a webpage was its scroll position. The hash enabled navigating to specific location on the page. I see the hash as an opportunity to do to app state what bit.ly did to urls. Ideally a URL should have the ability to completely restore the state of an application, not just a slice of it. Something like `example.com/puppies-adorably-confused-by-rainbow/#xsu7` tells the user what's on the page and tells the app to fetch the state value associated with the `xsu7` hash.
 
 A complete router example will be provided in a week or two.
+
+### Components
+
+See `redux-history-component`.
+
+`<Link href="/foo" />`
 
 ### Discussions & Related Projects
 
