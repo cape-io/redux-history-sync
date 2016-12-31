@@ -38,7 +38,7 @@
   "dependencies": {
     "cape-redux": "^2.2.1",
     "classnames": "^2.2.5",
-    "lodash": "^4.17.2",
+    "lodash": "^4.17.4",
     "redux": "^3.6.0"
   },
   "devDependencies": {
