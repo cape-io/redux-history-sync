@@ -1,3 +1,7 @@
+import { flow } from 'lodash'
+import reducer from '../src/reducer'
+import { defaultInitState } from '../src/initState'
+import { create } from '../src/actions'
 
 export const location = {
   some: 'stuff',
@@ -22,3 +26,9 @@ export const historyState = {
   },
   title: 'Site Title Here',
 }
+export const state1 = defaultInitState(create('/', 'home'))
+export const state = flow(
+  ste => reducer(ste, create('/students', 'Students')),
+  ste => reducer(ste, create('/students/abc1', 'Emily')),
+  ste => reducer(ste, create('/students/def2', 'George'))
+)(state1)

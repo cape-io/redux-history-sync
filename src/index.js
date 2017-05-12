@@ -5,9 +5,10 @@ export {
   create as createHistory,
   restore as restoreHistory,
 } from './actions'
-export historyMiddleware from './middleware'
-export getInitState from './initState'
-export historyReducer from './reducer'
+export { default as historyMiddleware } from './middleware'
+export { default as getInitState } from './initState'
+export { default as historyReducer } from './reducer'
 export * from './select'
-export syncHistoryWithStore from './sync'
+export * from './selectors'
+export { default as syncHistoryWithStore } from './sync'
 export { newId, locationSerialize, parseUrl } from './utils'

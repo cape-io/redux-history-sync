@@ -1,8 +1,6 @@
 import { createFromBrowser, restore, hashChange } from './actions'
-import {
-  browserHasHistory, browserHistory, getKeyIndex, historyMatch, keyMatch, lengthMatch,
-  isNewHistory, selectActiveKey, selectHistoryState,
-} from './select'
+import { browserHistory, getKeyIndex, historyMatch, lengthMatch, selectActiveKey } from './select'
+import { browserHasHistory, keyMatch, isNewHistory, selectHistoryState } from './selectors'
 import { locationSerialize } from './utils'
 
 export function createPopListener(listener, reset) {
@@ -117,7 +115,7 @@ export default function syncHistoryWithStore(store, _window, {
     )
   }
   // We want to make sure the window history state matches Redux initially.
-  changeBrowserHistory(historyState, _window.history.replaceState.bind(history))
+  changeBrowserHistory(historyState, _window.history.replaceState.bind(_window.history))
   // Sync Redux -> Browser History
   syncStoreHistory(store, _window.history, selectHistory)
   // Sync Browser History -> Redux

@@ -1,6 +1,8 @@
+import { flow } from 'lodash/fp'
 import { locationSerialize } from './utils'
 import { HISTORY_HASH_CHANGE, create } from './actions'
-import { selectActiveKey, selectHistoryState } from './select'
+import { selectActiveKey } from './select'
+import { selectHistoryState } from './selectors'
 
 /**
  * This middleware:
@@ -11,7 +13,7 @@ export default function middleware(history, selectHistory = selectHistoryState) 
     // A new history entry was added to browser, [sigh] mirror in Redux.
     if (action.type === HISTORY_HASH_CHANGE) {
       // We need all the info from current key.
-      const { location, title } = selectActiveKey(selectHistory(store.getState()))
+      const { location, title } = flow(selectHistory, selectActiveKey)(store.getState())
       const { hash, key } = action.payload
       // Overwrite old location hash with new one.
       location.hash = hash

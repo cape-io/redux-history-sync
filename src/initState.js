@@ -1,17 +1,15 @@
+import { flow } from 'lodash'
 import { create, createFromBrowser } from './actions'
 import reducer from './reducer'
-import { browserHasHistory } from './select'
+import { browserHasHistory } from './selectors'
 
-export function defaultInitState(location, title) {
-  const action = create(location, title)
-  const state = reducer(undefined, action)
-  return state
+export function newReducer(action) {
+  return reducer(undefined, action)
 }
-export function stateFromBrowser(historyState) {
-  const action = createFromBrowser(historyState)
-  const state = reducer(undefined, action)
-  return state
-}
+// defaultInitState(location, title)
+export const defaultInitState = flow(create, newReducer)
+export const stateFromBrowser = flow(createFromBrowser, newReducer)
+
 export default function getInitState(location, title, history) {
   if (browserHasHistory(history)) return stateFromBrowser(history.state)
   return defaultInitState(location, title)

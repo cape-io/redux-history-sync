@@ -2,6 +2,8 @@ import identity from 'lodash/identity'
 import pick from 'lodash/pick'
 import pickBy from 'lodash/pickBy'
 
+/* global window */
+
 const hasWindowGlobal = typeof window === 'object'
 const hasRequireGlobal = typeof require === 'function'
 

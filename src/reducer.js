@@ -1,8 +1,7 @@
-import isFunction from 'lodash/isFunction'
 import omitBy from 'lodash/omitBy'
-
+import { createReducer } from 'cape-redux'
 import { HISTORY_CREATE, HISTORY_LEARN, HISTORY_RESTORE } from './actions'
-import { getFirstIndex, getLastIndex, getKeyIndex } from './select'
+import { getFirstIndex, getLastIndex, selectNextIndex } from './select'
 
 export const initState = {
   activeKey: null,
@@ -20,23 +19,25 @@ export function createNewState({ firstKey, refresh }, { id }, key) {
     refresh,
   }
 }
+// Remove all entries with index equal or more.
+// @TODO BUT WHY?
 export function removeForwardItems(items, index) {
   return omitBy(items, item => item.index >= index)
 }
 export function createNewHistory({ key }, { location, id, title, lastVisit }, index) {
-  // Remove all entries with index equal or more.
-  const items = removeForwardItems(key, index)
-  items[id] = {
-    index,
-    lastVisit,
-    location,
-    id,
-    title,
+  return {
+    ...removeForwardItems(key, index),
+    [id]: {
+      index,
+      lastVisit,
+      location,
+      id,
+      title,
+    },
   }
-  return items
 }
 export function historyCreate(state, payload) {
-  const key = createNewHistory(state, payload, getKeyIndex(state) + 1)
+  const key = createNewHistory(state, payload, selectNextIndex(state))
   return createNewState(state, payload, key)
 }
 export function getLastKey(state, { id, index }) {
@@ -85,7 +86,4 @@ const reducers = {
 /**
  * This reducer will update the state with the most recent history key and location.
  */
-export default function reducer(state = initState, action) {
-  if (action.error || !action.type || !isFunction(reducers[action.type])) return state
-  return reducers[action.type](state, action.payload)
-}
+export default createReducer(reducers, initState)

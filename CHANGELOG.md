@@ -1,3 +1,8 @@
+## [3.1.0]
+
+* `selectPrevious()` will select previous history entry or return null.
+* `findDifferentPage(findFunc)`
+
 ## [3.0.1]
 
 * Update packages.
