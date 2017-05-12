@@ -6,7 +6,7 @@ import { stateFromBrowser } from '../src/initState'
 import { initState } from '../src/reducer'
 import {
   getKeyIndex, selectActive, selectFirstKey, getFirstIndex, getHistoryItems,
-  selectActiveIndex, getActiveId,
+  selectActiveIndex, getActiveId, findDifferentPage,
 } from '../src'
 
 test('selectActive', (t) => {
@@ -37,7 +37,12 @@ test('getKeyIndex', (t) => {
   t.equal(getKeyIndex(learnedState), 1, 'activeKey index')
   t.end()
 })
+function isDifferentPage({ location: { pathname } }) {
+  return !pathname.startsWith('/students/')
+}
 test('findDifferentPage', (t) => {
-  console.log(state)
+  const res = findDifferentPage(isDifferentPage)(state)
+  t.equal(res.index, 2)
+  t.equal(res.title, 'Students')
   t.end()
 })
