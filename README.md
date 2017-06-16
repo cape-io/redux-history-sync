@@ -4,6 +4,8 @@ Essentially, this module syncs **browser** history locations with a [Redux](http
 
 This module is intended to be the **only** module in your app that manages or touches window.history. If you want integration with `react-router` or `history` look at `react-router-redux`.
 
+**NOTE:** Documentation here is light. You might want to check out https://github.com/faceyspacey/redux-first-router instead?
+
 ## Install
 
 npm install --save redux-history-sync
@@ -83,3 +85,4 @@ See `redux-history-component`.
 * https://github.com/rackt/react-router-redux/pull/259
 * https://github.com/ezekielchentnik/redux-history/issues/1#issuecomment-181349898
 * https://github.com/callum/redux-routing/
+* https://github.com/faceyspacey/redux-first-router
