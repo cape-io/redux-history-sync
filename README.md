@@ -2,9 +2,7 @@
 
 Essentially, this module syncs **browser** history locations with a [Redux](https://github.com/rackt/redux) store. If you are looking to read and write changes to the address bar via Redux this might be for you.
 
-This module is intended to be the **only** module in your app that manages or touches window.history. If you want integration with `react-router` or `history` look at `react-router-redux`.
-
-**NOTE:** Documentation here is light. You might want to check out https://github.com/faceyspacey/redux-first-router instead?
+This module is intended to be the **only** module in your app that manages or touches window.history. If you want integration with `react-router` or `history` look elsewhere.
 
 ## Install
 
@@ -30,6 +28,35 @@ Navigating to a new "page" should act like it. UI state should reset/restore as 
 * Exchange many API parts for modularity and customization.
 * Absolutely no concern over routing/router/routes.
 * Avoid any direct usage of the `window` object from within the library. This might change in the future.
+
+## Usage
+
+```javascript
+import { getInitState, historyMiddleware, syncHistoryWithStore } from 'redux-history-sync'
+import { composeWithDevTools } from 'redux-devtools-extension'
+
+const initState = {
+  history: getInitState(window.location, window.document.title, window.history),
+}
+const store = createStore(
+  reducer,
+  initState,
+  composeWithDevTools( // Can use typical redux compose function instead.
+    applyMiddleware(
+      historyMiddleware(window.history),
+      thunk,
+    ),
+  )
+)
+syncHistoryWithStore(store, window)
+```
+
+```javascript
+import { createHistory } from 'redux-history-sync'
+
+dispatch(createHistory('/some/new/location'))
+
+```
 
 ## API
 
