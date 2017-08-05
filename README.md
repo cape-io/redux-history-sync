@@ -62,7 +62,7 @@ dispatch(createHistory('/some/new/location'))
 
 ### Actions
 
-* `createHistory(location, title, key = null, pushState = true)` `HISTORY_CREATE` This action should be dispatched when you want a new history entry. Usually the result of an interaction with a UI. Browser refresh and then forward can also create actions with this type.
+* `createHistory(location, title, key = null, pushState = true)` `HISTORY_CREATE` This action should be dispatched when you want a new history entry or wish to change the location in the address bar. Usually the result of an interaction with a UI. Browser refresh and then forward can also create actions with this type.
 * `restoreHistory(key, pushState = true)` `HISTORY_RESTORE` This action should be dispatched when you want to exchange state with a previous history. Usually triggered by the browser back/forward buttons but can also be used inside the app to change browser history position.
 * `createFromBrowser()` `HISTORY_LEARN` If the user refreshes on a page the app thinks they do not have browser history. Clicking the browser back button will result in this action being triggered.
 
