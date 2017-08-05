@@ -60,17 +60,11 @@ dispatch(createHistory('/some/new/location'))
 
 ## API
 
-Currently the best documentation is reading the source and looking at the example.
-
-### Action types
-
-* `HISTORY_CREATE`: Usually the result of an interaction with a UI. Browser refresh and then forward can also create actions with this type.
-* `HISTORY_RESTORE`: Usually browser back/forward but can also be used inside the app to change browser history position.
-
 ### Actions
 
-* `createHistory(location, title, key = null, pushState = true)` This action should be dispatched when you want a new history entry.
-* `restoreHistory(key, pushState = true)` This action should be dispatched when you want to exchange state with a previous history.
+* `createHistory(location, title, key = null, pushState = true)` `HISTORY_CREATE` This action should be dispatched when you want a new history entry. Usually the result of an interaction with a UI. Browser refresh and then forward can also create actions with this type.
+* `restoreHistory(key, pushState = true)` `HISTORY_RESTORE` This action should be dispatched when you want to exchange state with a previous history. Usually triggered by the browser back/forward buttons but can also be used inside the app to change browser history position.
+* `createFromBrowser()` `HISTORY_LEARN` If the user refreshes on a page the app thinks they do not have browser history. Clicking the browser back button will result in this action being triggered.
 
 ### Possible hacks
 
@@ -83,7 +77,6 @@ Currently the best documentation is reading the source and looking at the exampl
 ### Reducer
 
 `historyReducer`
-`historySessionReducer`
 
 ### Reducer Hydratable
 
