@@ -78,27 +78,14 @@ dispatch(createHistory('/some/new/location'))
 
 `historyReducer`
 
-### Reducer Hydratable
-
-`makeHydratable`
-
 ### Sync
 
+Use this after the store is created to enable redux to control browser history.
 `syncHistoryWithStore(store, window, historyCache)`
 
 ## Routes / Routing / Router
 
-The address bar is a form input. It does not represent overall state. At its best the url can be parsed into an object and be used to populate a tiny portion of application state.
-
-In the beginning the only "state" on a webpage was its scroll position. The hash enabled navigating to specific location on the page. I see the hash as an opportunity to do to app state what bit.ly did to urls. Ideally a URL should have the ability to completely restore the state of an application, not just a slice of it. Something like `example.com/puppies-adorably-confused-by-rainbow/#xsu7` tells the user what's on the page and tells the app to fetch the state value associated with the `xsu7` hash.
-
-A complete router example will be provided in a week or two.
-
-### Components
-
-See `redux-history-component`.
-
-`<Link href="/foo" />`
+The address bar is a form input. It does not represent overall state. At its best the url can be parsed into an object and be used to populate a tiny portion of application state. See [location-info](https://www.npmjs.com/package/location-info)
 
 ### Discussions & Related Projects
 
