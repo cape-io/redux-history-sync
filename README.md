@@ -32,11 +32,16 @@ Navigating to a new "page" should act like it. UI state should reset/restore as 
 ## Usage
 
 ```javascript
-import { getInitState, historyMiddleware, syncHistoryWithStore } from 'redux-history-sync'
+import {
+  getInitState, historyMiddleware, historyReducer, syncHistoryWithStore,
+} from 'redux-history-sync'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 const initState = {
   history: getInitState(window.location, window.document.title, window.history),
+}
+const reducer = {
+  history,
 }
 const store = createStore(
   reducer,
