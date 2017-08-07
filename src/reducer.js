@@ -1,6 +1,6 @@
 import { get, omitBy } from 'lodash'
 import { createReducer } from 'cape-redux'
-import { merge, setIn } from 'cape-lodash'
+import { merge, set, setIn } from 'cape-lodash'
 import { HISTORY_CREATE, HISTORY_LEARN, HISTORY_RESTORE, HISTORY_UPDATE } from './actions'
 import { getFirstIndex, getLastIndex, selectNextIndex } from './select'
 
@@ -21,20 +21,17 @@ export function createNewState({ firstKey, refresh }, { id }, key) {
   }
 }
 
-// Remove all entries with index equal or more.
-// @TODO BUT WHY?
+// Remove all entries with index equal or more when creating new history.
+// This is because the browser forward button goes away after back, back, create.
 export function removeForwardItems(items, index) {
   return omitBy(items, item => item.index >= index)
 }
-export function createNewHistory({ key }, { location, id, title, lastVisit }, index) {
+export function createNewHistory({ key }, payload, index) {
   return {
     ...removeForwardItems(key, index),
-    [id]: {
+    [payload.id]: {
       index,
-      lastVisit,
-      location,
-      id,
-      title,
+      ...payload,
     },
   }
 }
@@ -64,8 +61,7 @@ export function learnState(state, payload, key) {
   }
 }
 function historyLearn(state, payload) {
-  const key = createNewHistory(state, payload, payload.index)
-  return learnState(state, payload, key)
+  return learnState(state, payload, set(state.key, payload.id, payload))
 }
 function historyRestore({ key, ...state }, { id, lastVisit }) {
   return {
