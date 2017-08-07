@@ -1,5 +1,6 @@
-import { get } from 'lodash/fp'
+import { flow, get } from 'lodash/fp'
 // import { find, flow, orderBy, reverse } from 'lodash/fp'
+import { selectActiveKey } from './select'
 
 export function activeLastMatch({ activeKey, lastKey }) {
   return activeKey === lastKey
@@ -16,3 +17,4 @@ export function keyMatch(reduxHistory, windowHistory) {
   return reduxHistory.activeKey === windowHistory.id
 }
 export const selectHistoryState = get('history')
+export const selectActiveKeyDefault = flow(selectHistoryState, selectActiveKey)
