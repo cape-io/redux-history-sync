@@ -37,6 +37,8 @@ import {
 } from 'redux-history-sync'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
+/* global window */
+
 const initState = {
   history: getInitState(window.location, window.document.title, window.history),
 }
