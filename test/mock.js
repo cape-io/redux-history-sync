@@ -13,8 +13,11 @@ export const history = {
   state: null,
 }
 export const historyState = {
+  activeKey: 'cra6ls',
+  firstKey: 'cra6ls',
+  lastKey: 'cra6ls',
   index: 1,
-  id: 'cra6ls8zpg2glcp611yvi',
+  id: 'cra6ls',
   location: {
     hash: '',
     hostname: 'localhost',
@@ -24,7 +27,49 @@ export const historyState = {
     protocol: 'http:',
     search: '',
   },
-  title: 'Site Title Here',
+  refresh: false,
+}
+export const refreshState = {
+  activeKey: 'do02vb',
+  firstKey: 'do02vb',
+  key: {
+    do02vb: {
+      index: 3,
+      lastVisit: 1502067346532,
+      location: {
+        pathname: '/sam',
+        origin: 'http://localhost:3000',
+        protocol: 'http:',
+        port: '3000',
+        hostname: 'localhost',
+        hash: '',
+        search: '',
+      },
+      id: 'do02vb',
+      title: '',
+    },
+  },
+  lastKey: 'do02vb',
+  refresh: true,
+}
+export const backButtonHistoryLearn = {
+  type: 'history/HISTORY_LEARN',
+  payload: {
+    index: 2,
+    lastVisit: 1502067310869,
+    location: {
+      pathname: '/sd',
+      origin: 'http://localhost:3000',
+      protocol: 'http:',
+      port: '3000',
+      hostname: 'localhost',
+      hash: '',
+      search: '',
+    },
+    id: 'zq9v3s',
+    title: '',
+    length: 3,
+  },
 }
 export const state1 = defaultInitState(create('/', 'home'))
 export const state = flow(

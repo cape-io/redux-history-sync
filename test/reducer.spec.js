@@ -1,9 +1,9 @@
 import test from 'tape'
 
-import { historyState } from './mock'
+import { backButtonHistoryLearn, historyState, refreshState } from './mock'
 import { createFromBrowser } from '../src/actions'
 import reducer, {
-  createNewHistory, getFirstKey, initState, learnState, removeForwardItems,
+  createNewHistory, getFirstKey, initState, historyLearn, removeForwardItems,
 } from '../src/reducer'
 
 test('reducer', (t) => {
@@ -35,13 +35,12 @@ test('getFirstKey', (t) => {
   t.equal(getFirstKey(initState, { id, index: 1 }), id, 'empty return payload id')
   t.end()
 })
-test('learnState', (t) => {
-  const key = createNewHistory(initState, payload, payload.index)
-  const state = learnState(initState, payload, key)
+test('historyLearn', (t) => {
+  const state = historyLearn(refreshState, backButtonHistoryLearn.payload)
   t.ok(state.refresh, 'refresh')
-  t.equal(state.firstKey, payload.id, 'firstKey')
-  t.equal(state.lastKey, payload.id, 'lastKey')
-  t.equal(state.activeKey, payload.id, 'activeKey')
+  t.equal(state.firstKey, backButtonHistoryLearn.payload.id, 'firstKey')
+  t.equal(state.lastKey, refreshState.lastKey, 'lastKey')
+  t.equal(state.activeKey, backButtonHistoryLearn.payload.id, 'activeKey')
   t.end()
 })
 

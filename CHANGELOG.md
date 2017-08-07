@@ -1,4 +1,4 @@
-## [3.2.1]
+## [3.2.2]
 
 * `HISTORY_LEARN` was incorrectly running removeForwardItems(). That is only for newly created history.
 

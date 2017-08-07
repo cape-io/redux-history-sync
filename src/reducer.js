@@ -51,17 +51,14 @@ export function getFirstKey(state, { id, index }) {
   if (index < firstIndex) return id
   return state.firstKey
 }
-export function learnState(state, payload, key) {
+export function historyLearn(state, payload) {
   return {
     activeKey: payload.id,
     firstKey: getFirstKey(state, payload),
-    key,
+    key: set(state.key, payload.id, payload),
     lastKey: getLastKey(state, payload),
     refresh: true,
   }
-}
-function historyLearn(state, payload) {
-  return learnState(state, payload, set(state.key, payload.id, payload))
 }
 function historyRestore({ key, ...state }, { id, lastVisit }) {
   return {

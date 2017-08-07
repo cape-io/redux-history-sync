@@ -14,7 +14,7 @@ test('selectActive', (t) => {
   t.equal(getHistoryItems(learnedState), learnedState.key, 'getHistoryItems')
   t.equal(getActiveId(learnedState), learnedState.activeKey, 'getActiveId')
   const activeKey = selectActive(learnedState)
-  t.equal(activeKey.id, 'cra6ls8zpg2glcp611yvi', 'activeKey id')
+  t.equal(activeKey.id, 'cra6ls', 'activeKey id')
   t.end()
 })
 
