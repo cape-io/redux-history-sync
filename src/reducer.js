@@ -1,6 +1,7 @@
-import omitBy from 'lodash/omitBy'
+import { get, omitBy } from 'lodash'
 import { createReducer } from 'cape-redux'
-import { HISTORY_CREATE, HISTORY_LEARN, HISTORY_RESTORE } from './actions'
+import { merge, setIn } from 'cape-lodash'
+import { HISTORY_CREATE, HISTORY_LEARN, HISTORY_RESTORE, HISTORY_UPDATE } from './actions'
 import { getFirstIndex, getLastIndex, selectNextIndex } from './select'
 
 export const initState = {
@@ -19,6 +20,7 @@ export function createNewState({ firstKey, refresh }, { id }, key) {
     refresh,
   }
 }
+
 // Remove all entries with index equal or more.
 // @TODO BUT WHY?
 export function removeForwardItems(items, index) {
@@ -65,23 +67,29 @@ function historyLearn(state, payload) {
   const key = createNewHistory(state, payload, payload.index)
   return learnState(state, payload, key)
 }
-function historyRestore({ key, ...state }, activeKey) {
+function historyRestore({ key, ...state }, { id, lastVisit }) {
   return {
     ...state,
-    activeKey,
+    activeKey: id,
     key: {
       ...key,
-      [activeKey]: {
-        ...key[activeKey],
-        lastVisit: Date.now(),
+      [id]: {
+        ...key[id],
+        lastVisit,
       },
     },
   }
+}
+export const getHistoryItem = (state, id) => get(state, ['key', id], {})
+
+export function historyUpdate(state, payload) {
+  return setIn(['key', payload.id], state, merge(getHistoryItem(payload.id, state), payload))
 }
 const reducers = {
   [HISTORY_CREATE]: historyCreate,
   [HISTORY_LEARN]: historyLearn,
   [HISTORY_RESTORE]: historyRestore,
+  [HISTORY_UPDATE]: historyUpdate,
 }
 /**
  * This reducer will update the state with the most recent history key and location.
