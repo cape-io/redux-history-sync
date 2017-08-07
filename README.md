@@ -67,6 +67,8 @@ dispatch(createHistory('/some/new/location'))
 
 ```
 
+If you need route handling check out [location-info](https://www.npmjs.com/package/location-info)
+
 ## API
 
 ### Actions
