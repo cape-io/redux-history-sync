@@ -31,6 +31,8 @@ Navigating to a new "page" should act like it. UI state should reset/restore as 
 
 ## Usage
 
+Example [website](https://redux-history.cape.io) [repo](https://github.com/cape-io/redux-history-example)
+
 ```javascript
 import {
   getInitState, historyMiddleware, historyReducer, syncHistoryWithStore,
