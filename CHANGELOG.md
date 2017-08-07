@@ -1,3 +1,7 @@
+## [3.2.1]
+
+* `HISTORY_LEARN` was incorrectly running removeForwardItems(). That is only for newly created history.
+
 ## [3.1.0]
 
 * `selectPrevious()` will select previous history entry or return null.

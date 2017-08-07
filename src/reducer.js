@@ -1,6 +1,7 @@
-import omitBy from 'lodash/omitBy'
+import { get, omitBy } from 'lodash'
 import { createReducer } from 'cape-redux'
-import { HISTORY_CREATE, HISTORY_LEARN, HISTORY_RESTORE } from './actions'
+import { merge, set, setIn } from 'cape-lodash'
+import { HISTORY_CREATE, HISTORY_LEARN, HISTORY_RESTORE, HISTORY_UPDATE } from './actions'
 import { getFirstIndex, getLastIndex, selectNextIndex } from './select'
 
 export const initState = {
@@ -19,20 +20,18 @@ export function createNewState({ firstKey, refresh }, { id }, key) {
     refresh,
   }
 }
-// Remove all entries with index equal or more.
-// @TODO BUT WHY?
+
+// Remove all entries with index equal or more when creating new history.
+// This is because the browser forward button goes away after back, back, create.
 export function removeForwardItems(items, index) {
   return omitBy(items, item => item.index >= index)
 }
-export function createNewHistory({ key }, { location, id, title, lastVisit }, index) {
+export function createNewHistory({ key }, payload, index) {
   return {
     ...removeForwardItems(key, index),
-    [id]: {
+    [payload.id]: {
       index,
-      lastVisit,
-      location,
-      id,
-      title,
+      ...payload,
     },
   }
 }
@@ -62,26 +61,31 @@ export function learnState(state, payload, key) {
   }
 }
 function historyLearn(state, payload) {
-  const key = createNewHistory(state, payload, payload.index)
-  return learnState(state, payload, key)
+  return learnState(state, payload, set(state.key, payload.id, payload))
 }
-function historyRestore({ key, ...state }, activeKey) {
+function historyRestore({ key, ...state }, { id, lastVisit }) {
   return {
     ...state,
-    activeKey,
+    activeKey: id,
     key: {
       ...key,
-      [activeKey]: {
-        ...key[activeKey],
-        lastVisit: Date.now(),
+      [id]: {
+        ...key[id],
+        lastVisit,
       },
     },
   }
+}
+export const getHistoryItem = (state, id) => get(state, ['key', id], {})
+
+export function historyUpdate(state, payload) {
+  return setIn(['key', payload.id], state, merge(getHistoryItem(payload.id, state), payload))
 }
 const reducers = {
   [HISTORY_CREATE]: historyCreate,
   [HISTORY_LEARN]: historyLearn,
   [HISTORY_RESTORE]: historyRestore,
+  [HISTORY_UPDATE]: historyUpdate,
 }
 /**
  * This reducer will update the state with the most recent history key and location.

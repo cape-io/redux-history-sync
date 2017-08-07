@@ -1,15 +1,17 @@
-import defaults from 'lodash/defaults'
-import isString from 'lodash/isString'
+import { defaults, isString, now } from 'lodash'
 import { getLocationObject, newId, parseUrl } from './utils'
 
 /**
  * This action should be dispatched when you want to exchange state with a previous history.
  */
 export const HISTORY_RESTORE = 'history/RESTORE'
-export function restore(key, pushState = true) {
+export function restore(id, pushState = true) {
   return {
     type: HISTORY_RESTORE,
-    payload: key,
+    payload: {
+      id,
+      lastVisit: now(),
+    },
     meta: {
       pushState,
     },
@@ -21,23 +23,37 @@ const defaultLoc = {
   hash: '',
   search: '',
 }
+function getLocation(loc) {
+  return defaults(isString(loc) ? parseUrl(loc) : getLocationObject(loc), defaultLoc)
+}
 
 /**
  * This action should be dispatched when you want a new history entry.
  */
 export const HISTORY_CREATE = 'history/CREATE'
 export function create(_location, title, id = null, pushState = true) {
-  const loc = isString(_location) ? parseUrl(_location) : getLocationObject(_location)
   return {
     type: HISTORY_CREATE,
     payload: {
-      lastVisit: Date.now(),
+      lastVisit: now(),
       title: title || '',
-      location: defaults(loc, defaultLoc),
+      location: getLocation(_location),
       id: id || newId(),
     },
     meta: {
       pushState,
+    },
+  }
+}
+
+export const HISTORY_UPDATE = 'history/UPDATE'
+export function update(id, _location, title) {
+  return {
+    type: HISTORY_UPDATE,
+    payload: {
+      id,
+      title: title || '',
+      location: getLocation(_location),
     },
   }
 }

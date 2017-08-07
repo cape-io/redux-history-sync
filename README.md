@@ -2,7 +2,7 @@
 
 Essentially, this module syncs **browser** history locations with a [Redux](https://github.com/rackt/redux) store. If you are looking to read and write changes to the address bar via Redux this might be for you.
 
-This module is intended to be the **only** module in your app that manages or touches window.history. If you want integration with `react-router` or `history` look at `react-router-redux`.
+This module is intended to be the **only** module in your app that manages or touches window.history. If you want integration with `react-router` or `history` look elsewhere.
 
 ## Install
 
@@ -29,19 +29,49 @@ Navigating to a new "page" should act like it. UI state should reset/restore as 
 * Absolutely no concern over routing/router/routes.
 * Avoid any direct usage of the `window` object from within the library. This might change in the future.
 
+## Usage
+
+```javascript
+import {
+  getInitState, historyMiddleware, historyReducer, syncHistoryWithStore,
+} from 'redux-history-sync'
+import { composeWithDevTools } from 'redux-devtools-extension'
+
+/* global window */
+
+const initState = {
+  history: getInitState(window.location, window.document.title, window.history),
+}
+const reducer = {
+  history,
+}
+const store = createStore(
+  reducer,
+  initState,
+  composeWithDevTools( // Can use typical redux compose function instead.
+    applyMiddleware(
+      historyMiddleware(window.history),
+      thunk,
+    ),
+  )
+)
+syncHistoryWithStore(store, window)
+```
+
+```javascript
+import { createHistory } from 'redux-history-sync'
+
+dispatch(createHistory('/some/new/location'))
+
+```
+
 ## API
-
-Currently the best documentation is reading the source and looking at the example.
-
-### Action types
-
-* `HISTORY_CREATE`: Usually the result of an interaction with a UI. Browser refresh and then forward can also create actions with this type.
-* `HISTORY_RESTORE`: Usually browser back/forward but can also be used inside the app to change browser history position.
 
 ### Actions
 
-* `createHistory(location, title, key = null, pushState = true)` This action should be dispatched when you want a new history entry.
-* `restoreHistory(key, pushState = true)` This action should be dispatched when you want to exchange state with a previous history.
+* `createHistory(location, title, key = null, pushState = true)` `HISTORY_CREATE` This action should be dispatched when you want a new history entry or wish to change the location in the address bar. Usually the result of an interaction with a UI. Browser refresh and then forward can also create actions with this type.
+* `restoreHistory(key, pushState = true)` `HISTORY_RESTORE` This action should be dispatched when you want to exchange state with a previous history. Usually triggered by the browser back/forward buttons but can also be used inside the app to change browser history position.
+* `createFromBrowser()` `HISTORY_LEARN` If the user refreshes on a page the app thinks they do not have browser history. Clicking the browser back button will result in this action being triggered.
 
 ### Possible hacks
 
@@ -54,32 +84,19 @@ Currently the best documentation is reading the source and looking at the exampl
 ### Reducer
 
 `historyReducer`
-`historySessionReducer`
-
-### Reducer Hydratable
-
-`makeHydratable`
 
 ### Sync
 
+Use this after the store is created to enable redux to control browser history.
 `syncHistoryWithStore(store, window, historyCache)`
 
 ## Routes / Routing / Router
 
-The address bar is a form input. It does not represent overall state. At its best the url can be parsed into an object and be used to populate a tiny portion of application state.
-
-In the beginning the only "state" on a webpage was its scroll position. The hash enabled navigating to specific location on the page. I see the hash as an opportunity to do to app state what bit.ly did to urls. Ideally a URL should have the ability to completely restore the state of an application, not just a slice of it. Something like `example.com/puppies-adorably-confused-by-rainbow/#xsu7` tells the user what's on the page and tells the app to fetch the state value associated with the `xsu7` hash.
-
-A complete router example will be provided in a week or two.
-
-### Components
-
-See `redux-history-component`.
-
-`<Link href="/foo" />`
+The address bar is a form input. It does not represent overall state. At its best the url can be parsed into an object and be used to populate a tiny portion of application state. See [location-info](https://www.npmjs.com/package/location-info)
 
 ### Discussions & Related Projects
 
 * https://github.com/rackt/react-router-redux/pull/259
 * https://github.com/ezekielchentnik/redux-history/issues/1#issuecomment-181349898
 * https://github.com/callum/redux-routing/
+* https://github.com/faceyspacey/redux-first-router
