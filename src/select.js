@@ -32,12 +32,12 @@ export const getLength = selectNextIndex
 
 export function historyMatch(reduxHistory, windowHistory) {
   if (!windowHistory || !windowHistory.id) throw new Error('Missing window.history.state')
-  const activeKey = selectActiveKey(reduxHistory)
+  const activeKey = selectActive(reduxHistory)
   return activeKey.id === windowHistory.id
 }
 export function browserHistory(reduxHistory) {
   return {
-    ...selectActiveKey(reduxHistory),
+    ...selectActive(reduxHistory),
     length: getLength(reduxHistory),
   }
 }
