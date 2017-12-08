@@ -52,7 +52,7 @@ const reducer = {
 const store = createStore(
   reducer,
   initState,
-  composeWithDevTools( // Can use typical redux compose function instead.
+  composeWithDevTools( // Can use typical redux compose() function instead.
     applyMiddleware(
       historyMiddleware(window.history),
       thunk,
@@ -84,7 +84,7 @@ If you need route handling check out [location-info](https://www.npmjs.com/packa
 ### Sync
 
 Use this after the store is created to enable browser to dispatch redux actions.
-`syncHistoryWithStore(store, window, historyCache)`
+`syncHistoryWithStore(store, window, [selectHistoryState])`
 
 ### Actions
 
