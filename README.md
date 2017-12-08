@@ -79,6 +79,8 @@ If you need route handling check out [location-info](https://www.npmjs.com/packa
 
 ### Middleware
 
+This might not be needed. It's doing something with `HISTORY_HASH_CHANGE` and `history.replaceState()`.
+
 `historyMiddleware(window.history, [selectHistoryState])` Used to update address bar from actions. `window.history` is simply the browsers history object. `selectHistoryState` is a selector used to find where the `historyReducer` was added. By default selectHistoryState assumes the reducer was mounted to `history`.
 
 ### Sync
