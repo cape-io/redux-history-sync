@@ -33,6 +33,8 @@ Navigating to a new "page" should act like it. UI state should reset/restore as 
 
 Example [website](https://redux-history.cape.io) [repo](https://github.com/cape-io/redux-history-example)
 
+Three main things here. `getInitState`, `historyMiddleware`, `syncHistoryWithStore`
+
 ```javascript
 import {
   getInitState, historyMiddleware, historyReducer, syncHistoryWithStore,
@@ -71,28 +73,28 @@ If you need route handling check out [location-info](https://www.npmjs.com/packa
 
 ## API
 
+### Setting Up Initial State
+
+`getInitState(window.location, window.document.title)` Dispatch an initial action on reducer for sane DevTools resets. Seems like as good a time as any to put the initial address bar information into Redux. There might be better ways to do this?
+
+### Middleware
+
+`historyMiddleware(window.history, [selectHistoryState])` Used to update address bar from actions. `window.history` is simply the browsers history object. `selectHistoryState` is a selector used to find where the `historyReducer` was added. By default selectHistoryState assumes the reducer was mounted to `history`.
+
+### Sync
+
+Use this after the store is created to enable browser to dispatch redux actions.
+`syncHistoryWithStore(store, window, historyCache)`
+
 ### Actions
 
 * `createHistory(location, title, key = null, pushState = true)` `HISTORY_CREATE` This action should be dispatched when you want a new history entry or wish to change the location in the address bar. Usually the result of an interaction with a UI. Browser refresh and then forward can also create actions with this type.
 * `restoreHistory(key, pushState = true)` `HISTORY_RESTORE` This action should be dispatched when you want to exchange state with a previous history. Usually triggered by the browser back/forward buttons but can also be used inside the app to change browser history position.
 * `createFromBrowser()` `HISTORY_LEARN` If the user refreshes on a page the app thinks they do not have browser history. Clicking the browser back button will result in this action being triggered.
 
-### Possible hacks
-
-* `getInitState(window.location, window.document.title)` Dispatch initial action on reducer for sane DevTools resets.
-
-### Middleware
-
-`historyMiddleware(window.history, historyCache)`
-
 ### Reducer
 
 `historyReducer`
-
-### Sync
-
-Use this after the store is created to enable redux to control browser history.
-`syncHistoryWithStore(store, window, historyCache)`
 
 ## Routes / Routing / Router
 
