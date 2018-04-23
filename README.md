@@ -4,6 +4,8 @@ Essentially, this module syncs **browser** history locations with a [Redux](http
 
 This module is intended to be the **only** module in your app that manages or touches window.history. If you want integration with `react-router` or `history` look elsewhere.
 
+Combine with https://github.com/cape-io/location-info for your "routing" needs.
+
 ## Install
 
 npm install --save redux-history-sync
