@@ -106,7 +106,8 @@ The address bar is a form input. It does not represent overall state. At its bes
 
 ### Discussions & Related Projects
 
+* https://github.com/FormidableLabs/redux-little-router
+* https://github.com/faceyspacey/redux-first-router
 * https://github.com/rackt/react-router-redux/pull/259
 * https://github.com/ezekielchentnik/redux-history/issues/1#issuecomment-181349898
 * https://github.com/callum/redux-routing/
-* https://github.com/faceyspacey/redux-first-router
