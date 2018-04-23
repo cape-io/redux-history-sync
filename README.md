@@ -2,9 +2,11 @@
 
 Essentially, this module syncs **browser** history locations with a [Redux](https://github.com/rackt/redux) store. If you are looking to read and write changes to the address bar via Redux this might be for you.
 
-This module is intended to be the **only** module in your app that manages or touches window.history. If you want integration with `react-router` or `history` look elsewhere.
+This module is intended to be the **only** module in your app that manages or touches window.history. If you want integration with `react-router` look elsewhere. Currently _not_ using the `history` package. Open an issue if you want.
 
-Combine with https://github.com/cape-io/location-info for your "routing" needs.
+## Routes / Routing / Router
+
+The address bar is a form input. It does not represent overall state. At its best the url can be parsed into an object and be used to populate a tiny portion of application state. This module can be used with [location-info](https://www.npmjs.com/package/location-info) if your need require "routing".
 
 ## Install
 
@@ -99,10 +101,6 @@ Use this after the store is created to enable browser to dispatch redux actions.
 ### Reducer
 
 `historyReducer`
-
-## Routes / Routing / Router
-
-The address bar is a form input. It does not represent overall state. At its best the url can be parsed into an object and be used to populate a tiny portion of application state. See [location-info](https://www.npmjs.com/package/location-info)
 
 ### Discussions & Related Projects
 
